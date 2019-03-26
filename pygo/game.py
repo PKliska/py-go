@@ -2,13 +2,14 @@
 
 class Game:
 
-    def __init__(self, dim, n_player, board=None):
-        if board:
+    def __init__(self, n_player, dim=None, board=None):
+        if board is not None and dim is None:
+            self.dimension = len(board)
             self.board = board
-        else:
+        elif board is None and dim is not None:
+            self.dimension = dim
             self.board = [[None]*dim for i in range(dim)]
         self.current_player = 0
-        self.dimension = dim
         self.n_player = n_player
 
     def in_bounds(self, row, col):
