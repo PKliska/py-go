@@ -2,8 +2,11 @@
 
 class Game:
 
-    def __init__(self, dim, n_player):
-        self.board = [[None]*dim for i in range(dim)]
+    def __init__(self, dim, n_player, board=None):
+        if board:
+            self.board = board
+        else:
+            self.board = [[None]*dim for i in range(dim)]
         self.current_player = 0
         self.dimension = dim
         self.n_player = n_player
