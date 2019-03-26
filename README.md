@@ -1,2 +1,2 @@
 # py-go
-Python implementation of Go game using TKinter
+Python implementation of Go game using pyglet
