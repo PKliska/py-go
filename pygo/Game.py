@@ -17,6 +17,8 @@ class Game:
         self.current_player = 0
         self.dimension = dim
         self.n_player = n_player
+        self.t_total = 0
+        self.t_end = None
 
     def in_bounds(self, row, col):
         """Returns True if row and column are within the board"""
