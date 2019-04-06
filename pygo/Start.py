@@ -21,15 +21,13 @@ def removeChildren(root):
 		child.destroy()
 
 if __name__ == '__main__':
-	
+
 	root = Tk()
 
 	root.geometry('{}x{}'.format(cfg.x_window_size, cfg.y_window_size))
 	root.resizable(cfg.resize_window_x, cfg.resize_window_y)
 	root.configure(background=cfg.bg_color)
 	root.title('Py-Go')
-
-
 
 	testing = False
 
