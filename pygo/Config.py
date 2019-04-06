@@ -9,4 +9,6 @@ class ConfigStruct:
 
 		self.font_family = 'Noto Mono'
 
+		self.home_icon = '/home/patrik/Workspace/py-go/media/home.png'
+
 config = ConfigStruct()
