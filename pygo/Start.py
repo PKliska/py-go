@@ -1,6 +1,4 @@
-from tkinter import ttk
-from tkinter import Tk
-from tkinter.ttk import Label
+from tkinter import *
 from tkinter.font import Font
 
 from Config import config as cfg
@@ -15,35 +13,49 @@ root.title('Py-Go')
 def getFontSize(font):
 	return font.actual()['size']
 
-def getRelW(text, font, window):
-	return ((len(text) * getFontSize(font) / window))*0.9
+def getRelW(text, font, window, but=False):
+	mult = 0.9
+	if but:
+		mult *= 1.25
+	return ((len(text) * getFontSize(font) / window))*mult
 
-def getRelH(font, window):
-	return (getFontSize(font) /  window)*1.8
+def getRelH(font, window, but=False):
+	mult = 1.8
+	if but:
+		mult *= 1.25
+	return (getFontSize(font) /  window)*mult
 
 testing = False
 
-style = ttk.Style()
-style.configure('BW.TLabel', foreground='black', background=cfg.bg_color)
-style.configure('GAME.TLabel', foreground='black', background='blue' if testing else cfg.bg_color)
-style.configure('DESC.TLabel', foreground='black', background='red' if testing else cfg.bg_color)
-
 game_name_font = Font(family=cfg.font_family, size=70)
 desc_font = Font(family=cfg.font_family, size=12)
+but_font = Font(family=cfg.font_family, size=20)
 
 game_str = 'Py-Go'
 desc_str = 'An N-player Go implementation in Python using TKinter'
+new_game_str = 'New game'
+saved_games_str = 'Saved games'
 
 relw_game_name = getRelW(game_str, game_name_font, cfg.x_window_size)
 relw_desc = getRelW(desc_str, desc_font, cfg.x_window_size)
+relw_new = getRelW(new_game_str, but_font, cfg.x_window_size, but=True)
+relw_saved = getRelW(saved_games_str, but_font, cfg.x_window_size, but=True)
 
-relh_game_name = getRelH(game_name_font, cfg.x_window_size)
-relh_desc = getRelH(desc_font, cfg.x_window_size)
+relh_game_name = getRelH(game_name_font, cfg.y_window_size)
+relh_desc = getRelH(desc_font, cfg.y_window_size)
+relh_new = getRelH(but_font, cfg.y_window_size, but=True)
+relh_saved = getRelH(but_font, cfg.y_window_size, but=True)
 
-game_name = Label(root, text=game_str, font=game_name_font, style='GAME.TLabel', anchor='center')
+game_name = Label(root, text=game_str, font=game_name_font, anchor='center', foreground='black', background=cfg.bg_color)
 game_name.place(anchor='center', relheight=relh_game_name, relwidth=relw_game_name, relx=0.5, rely=0.2)
 
-desc = Label(root, text=desc_str, font=desc_font, style='DESC.TLabel', anchor='center')
+desc = Label(root, text=desc_str, font=desc_font, anchor='center', foreground='black', background=cfg.bg_color)
 desc.place(anchor='center', relheight=relh_desc, relwidth=relw_desc, relx=0.5, rely=0.35)
+
+new_game_but = Button(text=new_game_str, activebackground='pale green', bg=cfg.bg_color, font=but_font, fg='black', relief='flat', highlightthickness=5, highlightbackground='black')
+new_game_but.place(anchor='center', relheight=relh_new, relwidth=relw_new, relx=0.75, rely=0.8)
+
+saved_games_but = Button(text=saved_games_str, activebackground='khaki', bg=cfg.bg_color, font=but_font, fg='black', relief='flat', highlightthickness=5, highlightbackground='black')
+saved_games_but.place(anchor='center', relheight=relh_saved, relwidth=relw_saved, relx=0.25, rely=0.8)
 
 root.mainloop()
