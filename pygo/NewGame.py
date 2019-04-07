@@ -79,13 +79,12 @@ class NewGame(Frame):
 
 		self.configure(background=cfg.bg_color)
 
-
-		im = Image.open(cfg.home_icon)
-		ph = ImageTk.PhotoImage(im.resize((40, 40), Image.ANTIALIAS))
+		self.im = Image.open(cfg.home_icon)
+		self.ph = ImageTk.PhotoImage(self.im.resize((40, 40), Image.ANTIALIAS))
 
 		relh_home = relw_home = Start.getRelH(40, cfg.x_window_size, but=True)
 
-		home_button = Button(self, image=ph, activebackground='light salmon', bg=cfg.bg_color, fg='black', relief='flat', highlightthickness=5, highlightbackground='black')
+		home_button = Button(self, image=self.ph, activebackground='light salmon', bg=cfg.bg_color, fg='black', relief='flat', highlightthickness=5, highlightbackground='black')
 		home_button.place(anchor='center', relheight=relh_home/1.5, relwidth=relw_home/1.5, relx=0.05, rely=0.05)
 
 		game_query_str = 'Game name:'
