@@ -126,6 +126,12 @@ class NewGame(Frame):
 		option_menu.configure(relief='flat')
 		option_menu.place(anchor='center', relheight=relh_query, relwidth=relw_opt*1.5, relx=0.46, rely=0.28)
 		
+		play_str = 'Players:'
+		relh_play_str = Start.getRelH(20, cfg.y_window_size)
+		relw_play_str = Start.getRelW(play_str, 20, cfg.x_window_size)
+
+		play_title = Label(self, text=play_str, font=self.query_font, anchor='s', foreground='black', background=cfg.bg_color)
+		play_title.place(anchor='s', relheight=relh_play_str, relwidth=relw_play_str, relx=0.5, rely=0.4)
 
 		players = PlayerSetupWidget(self)
 		players.place(anchor='n', relx=0.5, rely=0.4)
