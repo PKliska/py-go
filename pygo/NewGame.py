@@ -16,12 +16,13 @@ class PlayerSetupWidget(Frame):
 			Frame.__init__(self, parent)
 			self.parent = parent
 			self.color = color
-			self.name_entry = Entry(self)
+			self.query_font = Font(family=cfg.font_family, size=15)
+			self.name_entry = Entry(self, bg = cfg.bg_color, font=self.query_font, fg='black', relief='flat')
 			self.name_entry.pack(fill = BOTH, expand = True, side=LEFT)
-			self.color_button = Button(self, text=" ", bg=color,
+			self.color_button = Button(self, text=" ", font=self.query_font, bg=color, relief='flat',
 									   command=self.change_color)
 			self.color_button.pack(fill = Y, expand = False, side=LEFT)
-			self.remove_button = Button(self, text="-",
+			self.remove_button = Button(self, text="-", font=self.query_font, bg=cfg.bg_color, relief='flat',
 										command=self.remove_player,
 										state=DISABLED)
 			self.remove_button.pack(fill = Y, expand = False, side=LEFT)
@@ -39,7 +40,8 @@ class PlayerSetupWidget(Frame):
 	def __init__(self, parent):
 		Frame.__init__(self, parent)
 		self.entries = []
-		self.add_player_button = Button(self, text="Add player",
+		button_font = Font(family=cfg.font_family, size=15)
+		self.add_player_button = Button(self, text="Add player", font=button_font, bg=cfg.bg_color, fg='black', relief='flat', highlightthickness=5, highlightbackground='black',
 										command=self.add_entry)
 		self.add_player_button.pack(fill=X, side=TOP)
 		self.add_entry()
@@ -90,22 +92,22 @@ class NewGame(Frame):
 		game_query_str = 'Game name:'
 		dimension_str = 'Dimension:'
 
-		query_font = Font(family=cfg.font_family, size=20)
+		self.query_font = Font(family=cfg.font_family, size=20)
 
 		relh_query = Start.getRelH(20, cfg.y_window_size)
 		relw_query_str = Start.getRelW(game_query_str, 20, cfg.x_window_size)
 		relw_dim_str = Start.getRelW(dimension_str, 20, cfg.x_window_size)
 
-		game_query_lab = Label(self, text=game_query_str, font=query_font, anchor='center', foreground='black', background=cfg.bg_color)
+		game_query_lab = Label(self, text=game_query_str, font=self.query_font, anchor='center', foreground='black', background=cfg.bg_color)
 		game_query_lab.place(anchor='center', relheight=relh_query, relwidth=relw_query_str, relx=0.3, rely=0.2)
 
-		dimension_lab = Label(self, text=dimension_str, font=query_font, anchor='center', foreground='black', background=cfg.bg_color)
+		dimension_lab = Label(self, text=dimension_str, font=self.query_font, anchor='center', foreground='black', background=cfg.bg_color)
 		dimension_lab.place(anchor='center', relheight=relh_query, relwidth=relw_dim_str, relx=0.3, rely=0.28)
 
 		n_chars_name = 20
 		relw_game_name = Start.getRelW('a'*n_chars_name, 20, cfg.x_window_size)
 
-		game_name_entry = Entry(self, bg = cfg.bg_color, font=query_font, fg='black', relief='flat')
+		game_name_entry = Entry(self, bg = cfg.bg_color, font=self.query_font, fg='black', relief='flat')
 		game_name_entry.place(anchor='center', relheight=relh_query, relwidth=relw_game_name, relx=0.57, rely=0.2)
 
 		dim_options = ['9x9', '13x13', '17x17', '19x19']
@@ -118,20 +120,22 @@ class NewGame(Frame):
 		option_menu.configure(activebackground=cfg.bg_color, activeforeground='black')
 		option_menu.configure(anchor='center')
 		option_menu.configure(background=cfg.bg_color, foreground='black')
-		option_menu.configure(font=query_font)
+		option_menu.configure(font=self.query_font)
 		option_menu.configure(disabledforeground=cfg.bg_color)
 		option_menu.configure(highlightthickness=1)
 		option_menu.configure(relief='flat')
 		option_menu.place(anchor='center', relheight=relh_query, relwidth=relw_opt*1.5, relx=0.46, rely=0.28)
-		test = PlayerSetupWidget(self)
-		test.place(relx=0.5, rely=0.5)
+		
+
+		players = PlayerSetupWidget(self)
+		players.place(anchor='n', relx=0.5, rely=0.4)
 
 
 		start_game_str = 'Start game!'
 		relh_start_str = Start.getRelH(20, cfg.y_window_size, but=True)
 		relw_start_str = Start.getRelW(start_game_str, 20, cfg.x_window_size)
 
-		start_game_but = Button(self, text=start_game_str, font=query_font, activebackground='pale green', bg=cfg.bg_color, fg='black', relief='flat', highlightthickness=5, highlightbackground='black')
+		start_game_but = Button(self, text=start_game_str, font=self.query_font, activebackground='pale green', bg=cfg.bg_color, fg='black', relief='flat', highlightthickness=5, highlightbackground='black')
 		start_game_but.place(anchor='center', relheight=relh_start_str, relwidth=relw_start_str, relx=0.8, rely=0.9)
 
 if __name__ == '__main__':
