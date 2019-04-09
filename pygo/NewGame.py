@@ -101,15 +101,15 @@ class PlayerSetupWidget(Frame):
 
 
 class NewGame(Frame):
-    def __init__(self, parent, controller):
-        Frame.__init__(self, parent)
-        self.controller = controller
-
+    def __init__(self, master):
+        Frame.__init__(self, master)
         self.configure(background=cfg.bg_color)
 
         size_home = tls.getRelH(cfg.home_button_size, cfg.x_window_size, button=True)
         self.home = tls.crHome()
 
+		#Very dirty hack fix by putting all gamestates into single module
+        from Start import Start
         home_button = Button(
             self,
             image=self.home,
@@ -119,6 +119,7 @@ class NewGame(Frame):
             relief=cfg.relief,
             highlightthickness=cfg.border_thick,
             highlightbackground=cfg.border_color,
+			command=lambda: self.master.switch_to(Start)
         )
         home_button.place(
             anchor="center",
@@ -161,6 +162,7 @@ class NewGame(Frame):
             font=tls.crFont("start"),
             foreground=cfg.fg_color,
             background=cfg.bg_color,
+			borderwidth=5,
         )
         dimension_labl.place(
             anchor="center",
@@ -264,16 +266,3 @@ class NewGame(Frame):
             relx=0.8,
             rely=0.9,
         )
-
-
-if __name__ == "__main__":
-
-    root = Tk()
-    root.geometry("{}x{}".format(cfg.x_window_size, cfg.y_window_size))
-    root.resizable(cfg.resize_window_x, cfg.resize_window_y)
-    root.columnconfigure(0, weight=1)
-    root.rowconfigure(0, weight=1)
-    root.title("Py-Go")
-    f = NewGame(root, None)
-    f.grid(row=0, column=0, sticky="nsew")
-    root.mainloop()
