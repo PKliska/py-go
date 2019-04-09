@@ -1,19 +1,21 @@
 import pickle
 
+
 def loadGame(fname):
-    with open(fname, 'r') as file:
+    with open(fname, "r") as file:
         game = pickle.load(file)
     return game
 
+
 def saveGame(game, fname):
-    with open(fname, 'w+') as file:
+    with open(fname, "w+") as file:
         pickle.dump(game, file, protocol=pickle.HIGHEST_PROTOCOL)
 
-class Game:
 
+class Game:
     def __init__(self, dim, n_player):
-        self.board = [[None]*dim for i in range(dim)]
-        self.ko_protected = [None]*n_player
+        self.board = [[None] * dim for i in range(dim)]
+        self.ko_protected = [None] * n_player
         self.current_player = 0
         self.dimension = dim
         self.n_player = n_player
@@ -22,7 +24,7 @@ class Game:
 
     def in_bounds(self, row, col):
         """Returns True if row and column are within the board"""
-        return 0<=row<self.dimension and 0<=col<self.dimension
+        return 0 <= row < self.dimension and 0 <= col < self.dimension
 
     def place_stone_as(self, row, col, player):
         """Places a stone on row and column as a player. Automatically clears
@@ -35,14 +37,14 @@ class Game:
         if self.board[row][col] is not None:
             raise ValueError("There is already a stone in this location")
 
-        self.board[row][col]=player
+        self.board[row][col] = player
         if self.is_group_dead(row, col):
-            suicide=True
+            suicide = True
             for i in self.neighbours(row, col):
                 if self.board[i[0]][i[1]] != player and self.is_group_dead(*i):
-                    suicide=False
+                    suicide = False
             if suicide:
-                self.board[row][col]=None
+                self.board[row][col] = None
                 raise ValueError("A player can't commit suicide")
 
         to_clear = []
@@ -50,13 +52,16 @@ class Game:
             if self.is_group_dead(*i):
                 to_clear.append(i)
 
-        if (self.n_player == 2 and
-            len(to_clear) == 1 and len(list(self.group(*to_clear[0]))) == 1):
+        if (
+            self.n_player == 2
+            and len(to_clear) == 1
+            and len(list(self.group(*to_clear[0]))) == 1
+        ):
             if to_clear[0] in self.ko_protected:
                 self.board[row][col] = None
                 raise ValueError("Ko rule violated")
             else:
-                self.ko_protected[player]=(row, col)
+                self.ko_protected[player] = (row, col)
         for i in to_clear:
             self.clear_group(*i)
 
@@ -67,7 +72,7 @@ class Game:
         if self.ko_protected[self.current_player] is not None:
             self.ko_protected[self.current_player] = None
         self.place_stone_as(row, col, self.current_player)
-        self.current_player=(self.current_player+1)%self.n_player
+        self.current_player = (self.current_player + 1) % self.n_player
 
     def neighbours(self, row, col):
         """Iterator over all the neighbouring stones to stone at row, col."""
@@ -79,7 +84,6 @@ class Game:
             if self.in_bounds(row + i, col + j):
                 yield (row + i, col + j)
 
-
     def group(self, row, col):
         """Iterator over all the stones that belong to the same group as the
         stone at (row, col), yields tuples of coordinates (row, col)
@@ -88,18 +92,18 @@ class Game:
             raise ValueError("Position is outside of the board")
         visited = set()
         to_visit = [(row, col)]
-        while len(to_visit)>0:
+        while len(to_visit) > 0:
             c = to_visit.pop()
             visited.add(c)
             yield c
             for i in self.neighbours(c[0], c[1]):
-                if i not in visited and self.board[i[0]][i[1]]==self.board[row][col]:
+                if i not in visited and self.board[i[0]][i[1]] == self.board[row][col]:
                     to_visit.append(i)
 
     def clear_group(self, row, col):
         """Removes a group from the board replacing it with empty spaces"""
         for i in self.group(row, col):
-            self.board[i[0]][i[1]]=None
+            self.board[i[0]][i[1]] = None
 
     def is_group_dead(self, row, col):
         """Returns True if group at row, col is dead i.e. it doesn't have any
@@ -117,12 +121,13 @@ class Game:
 
     def __str__(self):
         r = "A {0}x{0} game with {1} players. Player {2} plays next \n".format(
-                            self.dimension, self.n_player, self.current_player)
+            self.dimension, self.n_player, self.current_player
+        )
         for i in self.board:
             for j in i:
                 if j is None:
-                    r+='.'
+                    r += "."
                 else:
-                    r+=chr(ord('0')+j)
-            r+='\n'
+                    r += chr(ord("0") + j)
+            r += "\n"
         return r

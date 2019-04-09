@@ -1,157 +1,279 @@
 from tkinter import *
-from tkinter.font import Font
-from PIL import Image, ImageTk
 from tkinter.colorchooser import askcolor
 
 from Config import config as cfg
-import Start
+import Utils as tls
+
 
 class PlayerSetupWidget(Frame):
 
-	DEFAULT_COLORS = ['black', 'white', 'red', 'green', 'blue', 'violet']
+    DEFAULT_COLORS = ["black", "white", "red", "green", "blue", "violet"]
 
-	class PlayerSettings(Frame):
+    class PlayerSettings(Frame):
+        def __init__(self, parent, color):
+            Frame.__init__(self, parent)
+            self.parent = parent
+            self.color = color
+            self.name_entry = Entry(
+                self,
+                bg=cfg.bg_color,
+                font=tls.crFont("query"),
+                fg=cfg.fg_color,
+                relief=cfg.relief,
+            )
+            self.name_entry.pack(fill=BOTH, expand=True, side=LEFT)
+            self.color_button = Button(
+                self,
+                text=" ",
+                font=tls.crFont("query"),
+                bg=color,
+                relief=cfg.relief,
+                command=self.change_color,
+            )
+            self.color_button.pack(fill=Y, expand=False, side=LEFT)
+            self.remove_button = Button(
+                self,
+                text="-",
+                font=tls.crFont("query"),
+                bg=cfg.bg_color,
+                relief=cfg.relief,
+                command=self.remove_player,
+                state=DISABLED,
+            )
+            self.remove_button.pack(fill=Y, expand=False, side=LEFT)
 
-		def __init__(self, parent, color):
-			Frame.__init__(self, parent)
-			self.parent = parent
-			self.color = color
-			self.query_font = Font(family=cfg.font_family, size=15)
-			self.name_entry = Entry(self, bg = cfg.bg_color, font=self.query_font, fg='black', relief='flat')
-			self.name_entry.pack(fill = BOTH, expand = True, side=LEFT)
-			self.color_button = Button(self, text=" ", font=self.query_font, bg=color, relief='flat',
-									   command=self.change_color)
-			self.color_button.pack(fill = Y, expand = False, side=LEFT)
-			self.remove_button = Button(self, text="-", font=self.query_font, bg=cfg.bg_color, relief='flat',
-										command=self.remove_player,
-										state=DISABLED)
-			self.remove_button.pack(fill = Y, expand = False, side=LEFT)
+        def remove_player(self):
+            self.parent.remove_entry(self)
 
-		def remove_player(self):
-			self.parent.remove_entry(self)
+        def change_color(self):
+            self.color = askcolor(self.color)[1]
+            self.color_button.config(bg=self.color)
 
-		def change_color(self):
-			self.color = askcolor(self.color)[1]
-			self.color_button.config(bg = self.color)
+        def get_data(self):
+            return (self.name_entry.get(), self.color)
 
-		def get_data(self):
-			return (self.name_entry.get(), self.color)
+    def __init__(self, parent):
+        Frame.__init__(self, parent)
+        self.entries = []
+        self.add_player_button = Button(
+            self,
+            text="Add player",
+            font=tls.crFont("query"),
+            bg=cfg.bg_color,
+            fg=cfg.fg_color,
+            relief=cfg.relief,
+            highlightthickness=cfg.border_thick,
+            highlightbackground=cfg.border_color,
+            command=self.add_entry,
+        )
+        self.add_player_button.pack(fill=X, side=TOP)
+        self.add_entry()
+        self.add_entry()
 
-	def __init__(self, parent):
-		Frame.__init__(self, parent)
-		self.entries = []
-		button_font = Font(family=cfg.font_family, size=15)
-		self.add_player_button = Button(self, text="Add player", font=button_font, bg=cfg.bg_color, fg='black', relief='flat', highlightthickness=5, highlightbackground='black',
-										command=self.add_entry)
-		self.add_player_button.pack(fill=X, side=TOP)
-		self.add_entry()
-		self.add_entry()
+    def remove_entry(self, e):
+        e.pack_forget()
+        self.entries.remove(e)
 
-	def remove_entry(self, e):
-		e.pack_forget()
-		self.entries.remove(e)
+        if (
+            len(self.entries) < len(self.DEFAULT_COLORS)
+            and not self.add_player_button.winfo_ismapped()
+        ):
+            self.add_player_button.pack(fill=X, side=TOP)
 
-		if len(self.entries) < 6 and not self.add_player_button.winfo_ismapped():
-			self.add_player_button.pack(fill=X, side=TOP)
+        if len(self.entries) == 2:
+            for i in self.entries:
+                i.remove_button.config(state=DISABLED)
 
-		if len(self.entries)==2:
-			for i in self.entries:
-				i.remove_button.config(state=DISABLED)
+    def add_entry(self):
+        self.add_player_button.pack_forget()
+        e = self.PlayerSettings(self, self.DEFAULT_COLORS[len(self.entries)])
+        e.pack(fill=X, side=TOP)
+        self.entries.append(e)
+        if len(self.entries) < len(self.DEFAULT_COLORS):
+            self.add_player_button.pack(fill=X, side=TOP)
 
-	def add_entry(self):
-		self.add_player_button.pack_forget()
-		e = self.PlayerSettings(self, self.DEFAULT_COLORS[len(self.entries)])
-		e.pack(fill=X, side=TOP)
-		self.entries.append(e)
-		if len(self.entries) < 6:
-			self.add_player_button.pack(fill=X, side=TOP)
+        if len(self.entries) > 2:
+            for i in self.entries:
+                i.remove_button.config(state=NORMAL)
 
-		if len(self.entries) > 2:
-			for i in self.entries:
-				i.remove_button.config(state=NORMAL)
+    def get_data(self):
+        return [i.get_data() for i in entries]
 
-	def get_data(self):
-		return [i.get_data() for i in entries]
 
 class NewGame(Frame):
+    def __init__(self, parent, controller):
+        Frame.__init__(self, parent)
+        self.controller = controller
 
-	def __init__(self, parent, controller):
-		Frame.__init__(self, parent)
-		self.controller = controller
+        self.configure(background=cfg.bg_color)
 
-		self.configure(background=cfg.bg_color)
+        size_home = tls.getRelH(cfg.home_button_size, cfg.x_window_size, button=True)
+        self.home = tls.crHome()
 
-		self.im = Image.open(cfg.home_icon)
-		self.ph = ImageTk.PhotoImage(self.im.resize((40, 40), Image.ANTIALIAS))
+        home_button = Button(
+            self,
+            image=self.home,
+            activebackground="light salmon",
+            bg=cfg.bg_color,
+            fg=cfg.fg_color,
+            relief=cfg.relief,
+            highlightthickness=cfg.border_thick,
+            highlightbackground=cfg.border_color,
+        )
+        home_button.place(
+            anchor="center",
+            relheight=size_home / 1.5,
+            relwidth=size_home / 1.5,
+            relx=0.05,
+            rely=0.05,
+        )
 
-		relh_home = relw_home = Start.getRelH(40, cfg.x_window_size, but=True)
+        name_entry_str = "Game name:"
+        dimension_str = "Dimension:"
 
-		home_button = Button(self, image=self.ph, activebackground='light salmon', bg=cfg.bg_color, fg='black', relief='flat', highlightthickness=5, highlightbackground='black')
-		home_button.place(anchor='center', relheight=relh_home/1.5, relwidth=relw_home/1.5, relx=0.05, rely=0.05)
+        relh_name_entry = tls.getRelH(cfg.start_font_size, cfg.y_window_size)
+        relh_dimension = relh_name_entry
+        relw_name_entry = tls.getRelW(
+            name_entry_str, cfg.start_font_size, cfg.x_window_size
+        )
+        relw_dimension = tls.getRelW(
+            dimension_str, cfg.start_font_size, cfg.x_window_size
+        )
 
-		game_query_str = 'Game name:'
-		dimension_str = 'Dimension:'
+        game_query_labl = Label(
+            self,
+            text=name_entry_str,
+            font=tls.crFont("start"),
+            foreground=cfg.fg_color,
+            background=cfg.bg_color,
+        )
+        game_query_labl.place(
+            anchor="center",
+            relheight=relh_name_entry,
+            relwidth=relw_name_entry,
+            relx=0.3,
+            rely=0.2,
+        )
 
-		self.query_font = Font(family=cfg.font_family, size=20)
+        dimension_labl = Label(
+            self,
+            text=dimension_str,
+            font=tls.crFont("start"),
+            foreground=cfg.fg_color,
+            background=cfg.bg_color,
+        )
+        dimension_labl.place(
+            anchor="center",
+            relheight=relh_dimension,
+            relwidth=relw_dimension,
+            relx=0.3,
+            rely=0.28,
+        )
 
-		relh_query = Start.getRelH(20, cfg.y_window_size)
-		relw_query_str = Start.getRelW(game_query_str, 20, cfg.x_window_size)
-		relw_dim_str = Start.getRelW(dimension_str, 20, cfg.x_window_size)
+        game_name_chars = 20
+        relw_game_name = tls.getRelW(
+            "-" * game_name_chars, cfg.start_font_size, cfg.x_window_size
+        )
 
-		game_query_lab = Label(self, text=game_query_str, font=self.query_font, anchor='center', foreground='black', background=cfg.bg_color)
-		game_query_lab.place(anchor='center', relheight=relh_query, relwidth=relw_query_str, relx=0.3, rely=0.2)
+        game_name_entry = Entry(
+            self,
+            bg=cfg.bg_color,
+            font=tls.crFont("start"),
+            fg=cfg.fg_color,
+            relief=cfg.relief,
+        )
+        game_name_entry.place(
+            anchor="center",
+            relheight=relh_name_entry,
+            relwidth=relw_game_name,
+            relx=0.57,
+            rely=0.2,
+        )
 
-		dimension_lab = Label(self, text=dimension_str, font=self.query_font, anchor='center', foreground='black', background=cfg.bg_color)
-		dimension_lab.place(anchor='center', relheight=relh_query, relwidth=relw_dim_str, relx=0.3, rely=0.28)
+        dim_options = ["9x9", "13x13", "17x17", "19x19"]
+        dim_select = StringVar(self)
+        dim_select.set(dim_options[-1])
 
-		n_chars_name = 20
-		relw_game_name = Start.getRelW('a'*n_chars_name, 20, cfg.x_window_size)
+        relw_opt = tls.getRelW(dim_options[-1], cfg.start_font_size, cfg.x_window_size)
+        relh_opt = relh_name_entry
 
-		game_name_entry = Entry(self, bg = cfg.bg_color, font=self.query_font, fg='black', relief='flat')
-		game_name_entry.place(anchor='center', relheight=relh_query, relwidth=relw_game_name, relx=0.57, rely=0.2)
+        option_menu = OptionMenu(self, dim_select, *dim_options)
+        option_menu.configure(
+            activebackground=cfg.bg_color,
+            activeforeground="black",
+            background=cfg.bg_color,
+            foreground=cfg.fg_color,
+            font=tls.crFont("start"),
+            disabledforeground=cfg.bg_color,
+            highlightthickness=cfg.border_thin,
+            relief=cfg.relief,
+        )
+        option_menu.place(
+            anchor="center",
+            relheight=relh_opt,
+            relwidth=relw_opt * 1.5,
+            relx=0.46,
+            rely=0.28,
+        )
 
-		dim_options = ['9x9', '13x13', '17x17', '19x19']
-		dim_select = StringVar(self)
-		dim_select.set(dim_options[-1])
+        play_str = "Players:"
+        relh_play_str = tls.getRelH(cfg.start_font_size, cfg.y_window_size)
+        relw_play_str = tls.getRelW(play_str, cfg.start_font_size, cfg.x_window_size)
 
-		relw_opt = Start.getRelW(dim_options[-1], 20, cfg.x_window_size)
+        play_title = Label(
+            self,
+            text=play_str,
+            font=tls.crFont("start"),
+            foreground=cfg.fg_color,
+            background=cfg.bg_color,
+        )
+        play_title.place(
+            anchor="s",
+            relheight=relh_play_str,
+            relwidth=relw_play_str,
+            relx=0.5,
+            rely=0.4,
+        )
 
-		option_menu = OptionMenu(self, dim_select, *dim_options)
-		option_menu.configure(activebackground=cfg.bg_color, activeforeground='black')
-		option_menu.configure(anchor='center')
-		option_menu.configure(background=cfg.bg_color, foreground='black')
-		option_menu.configure(font=self.query_font)
-		option_menu.configure(disabledforeground=cfg.bg_color)
-		option_menu.configure(highlightthickness=1)
-		option_menu.configure(relief='flat')
-		option_menu.place(anchor='center', relheight=relh_query, relwidth=relw_opt*1.5, relx=0.46, rely=0.28)
-		
-		play_str = 'Players:'
-		relh_play_str = Start.getRelH(20, cfg.y_window_size)
-		relw_play_str = Start.getRelW(play_str, 20, cfg.x_window_size)
+        players = PlayerSetupWidget(self)
+        players.place(anchor="n", relx=0.5, rely=0.4)
 
-		play_title = Label(self, text=play_str, font=self.query_font, anchor='s', foreground='black', background=cfg.bg_color)
-		play_title.place(anchor='s', relheight=relh_play_str, relwidth=relw_play_str, relx=0.5, rely=0.4)
+        start_game_str = "Start game!"
+        relh_start_str = tls.getRelH(
+            cfg.start_font_size, cfg.y_window_size, button=True
+        )
+        relw_start_str = tls.getRelW(
+            start_game_str, cfg.start_font_size, cfg.x_window_size
+        )
 
-		players = PlayerSetupWidget(self)
-		players.place(anchor='n', relx=0.5, rely=0.4)
+        start_game_but = Button(
+            self,
+            text=start_game_str,
+            font=tls.crFont("start"),
+            activebackground="pale green",
+            bg=cfg.bg_color,
+            fg=cfg.fg_color,
+            relief=cfg.relief,
+            highlightthickness=cfg.border_thick,
+            highlightbackground=cfg.border_color,
+        )
+        start_game_but.place(
+            anchor="center",
+            relheight=relh_start_str,
+            relwidth=relw_start_str,
+            relx=0.8,
+            rely=0.9,
+        )
 
 
-		start_game_str = 'Start game!'
-		relh_start_str = Start.getRelH(20, cfg.y_window_size, but=True)
-		relw_start_str = Start.getRelW(start_game_str, 20, cfg.x_window_size)
+if __name__ == "__main__":
 
-		start_game_but = Button(self, text=start_game_str, font=self.query_font, activebackground='pale green', bg=cfg.bg_color, fg='black', relief='flat', highlightthickness=5, highlightbackground='black')
-		start_game_but.place(anchor='center', relheight=relh_start_str, relwidth=relw_start_str, relx=0.8, rely=0.9)
-
-if __name__ == '__main__':
-
-	root = Tk()
-	root.geometry('{}x{}'.format(cfg.x_window_size, cfg.y_window_size))
-	root.resizable(cfg.resize_window_x, cfg.resize_window_y)
-	root.columnconfigure(0, weight=1)
-	root.rowconfigure(0, weight=1)
-	root.title('Py-Go')
-	f = NewGame(root, None)
-	f.grid(row=0, column=0, sticky="nsew")
-	root.mainloop()
+    root = Tk()
+    root.geometry("{}x{}".format(cfg.x_window_size, cfg.y_window_size))
+    root.resizable(cfg.resize_window_x, cfg.resize_window_y)
+    root.columnconfigure(0, weight=1)
+    root.rowconfigure(0, weight=1)
+    root.title("Py-Go")
+    f = NewGame(root, None)
+    f.grid(row=0, column=0, sticky="nsew")
+    root.mainloop()
