@@ -26,5 +26,5 @@ class ConfigStruct:
         self.dim_options = ["9x9", "13x13", "17x17", "19x19"]
         self.DEFAULT_COLORS = ["black", "white", "red", "green", "blue", "violet"]
 
-        
+
 config = ConfigStruct()

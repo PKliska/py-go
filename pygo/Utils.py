@@ -18,6 +18,10 @@ def getRelH(font_size, y_window_size, button=False):
     return (font_size / y_window_size) * mult
 
 
+def getDim(dim_str):
+    return int(dim_str.split("x")[0])
+
+
 def removeChildren(root):
     for child in root.winfo_children():
         child.destroy()

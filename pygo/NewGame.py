@@ -271,10 +271,8 @@ class NewGame(Frame):
 
     def switchToPlay(self):
 
-    	game_name = self.game_name_entry.get().strip()
-    	dimension = self.dim_select.get()
-    	players = self.players.get_data()
+        game_name = self.game_name_entry.get().strip()
+        dimension = tls.getDim(self.dim_select.get())
+        players = self.players.get_data()
 
-    	print(game_name, dimension, players)
-
-    	self.master.switch_to(Play)
+        self.master.switch_to(Play(game_name, dimension, players))
