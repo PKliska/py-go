@@ -23,5 +23,8 @@ class ConfigStruct:
         self.start_font_size = 20
         self.title_font_size = 70
 
+        self.dim_options = ["9x9", "13x13", "17x17", "19x19"]
+        self.DEFAULT_COLORS = ["black", "white", "red", "green", "blue", "violet"]
 
+        
 config = ConfigStruct()

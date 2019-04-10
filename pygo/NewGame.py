@@ -7,7 +7,7 @@ import Utils as tls
 
 class PlayerSetupWidget(Frame):
 
-    DEFAULT_COLORS = ["black", "white", "red", "green", "blue", "violet"]
+    DEFAULT_COLORS = cfg.DEFAULT_COLORS
 
     class PlayerSettings(Frame):
         def __init__(self, parent, color):
@@ -97,7 +97,7 @@ class PlayerSetupWidget(Frame):
                 i.remove_button.config(state=NORMAL)
 
     def get_data(self):
-        return [i.get_data() for i in entries]
+        return [i.get_data() for i in self.entries]
 
 
 class NewGame(Frame):
@@ -178,14 +178,14 @@ class NewGame(Frame):
             "-" * game_name_chars, cfg.start_font_size, cfg.x_window_size
         )
 
-        game_name_entry = Entry(
+        self.game_name_entry = Entry(
             self,
             bg=cfg.bg_color,
             font=tls.crFont("start"),
             fg=cfg.fg_color,
             relief=cfg.relief,
         )
-        game_name_entry.place(
+        self.game_name_entry.place(
             anchor="center",
             relheight=relh_name_entry,
             relwidth=relw_game_name,
@@ -193,14 +193,14 @@ class NewGame(Frame):
             rely=0.2,
         )
 
-        dim_options = ["9x9", "13x13", "17x17", "19x19"]
-        dim_select = StringVar(self)
-        dim_select.set(dim_options[-1])
+        dim_options = cfg.dim_options
+        self.dim_select = StringVar(self)
+        self.dim_select.set(dim_options[-1])
 
         relw_opt = tls.getRelW(dim_options[-1], cfg.start_font_size, cfg.x_window_size)
         relh_opt = relh_name_entry
 
-        option_menu = OptionMenu(self, dim_select, *dim_options)
+        option_menu = OptionMenu(self, self.dim_select, *dim_options)
         option_menu.configure(
             activebackground=cfg.bg_color,
             activeforeground="black",
@@ -238,8 +238,8 @@ class NewGame(Frame):
             rely=0.4,
         )
 
-        players = PlayerSetupWidget(self)
-        players.place(anchor="n", relx=0.5, rely=0.4)
+        self.players = PlayerSetupWidget(self)
+        self.players.place(anchor="n", relx=0.5, rely=0.4)
 
         start_game_str = "Start game!"
         relh_start_str = tls.getRelH(
@@ -259,7 +259,7 @@ class NewGame(Frame):
             relief=cfg.relief,
             highlightthickness=cfg.border_thick,
             highlightbackground=cfg.border_color,
-            command=lambda: self.master.switch_to(Play),
+            command=lambda: self.switchToPlay(),
         )
         start_game_but.place(
             anchor="center",
@@ -268,3 +268,13 @@ class NewGame(Frame):
             relx=0.8,
             rely=0.9,
         )
+
+    def switchToPlay(self):
+
+    	game_name = self.game_name_entry.get().strip()
+    	dimension = self.dim_select.get()
+    	players = self.players.get_data()
+
+    	print(game_name, dimension, players)
+
+    	self.master.switch_to(Play)
