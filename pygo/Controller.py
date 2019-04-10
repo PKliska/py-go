@@ -3,8 +3,8 @@ from tkinter import *
 from Start import Start
 from NewGame import NewGame
 
-class Controller(Frame):
 
+class Controller(Frame):
     def __init__(self, master):
         Frame.__init__(self, master)
         self.current_activity = Start(self)

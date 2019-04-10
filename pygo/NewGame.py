@@ -108,8 +108,9 @@ class NewGame(Frame):
         size_home = tls.getRelH(cfg.home_button_size, cfg.x_window_size, button=True)
         self.home = tls.crHome()
 
-		#Very dirty hack fix by putting all gamestates into single module
+        # Very dirty hack fix by putting all gamestates into single module
         from Start import Start
+
         home_button = Button(
             self,
             image=self.home,
@@ -119,7 +120,7 @@ class NewGame(Frame):
             relief=cfg.relief,
             highlightthickness=cfg.border_thick,
             highlightbackground=cfg.border_color,
-			command=lambda: self.master.switch_to(Start)
+            command=lambda: self.master.switch_to(Start),
         )
         home_button.place(
             anchor="center",
@@ -162,7 +163,7 @@ class NewGame(Frame):
             font=tls.crFont("start"),
             foreground=cfg.fg_color,
             background=cfg.bg_color,
-			borderwidth=5,
+            borderwidth=5,
         )
         dimension_labl.place(
             anchor="center",
