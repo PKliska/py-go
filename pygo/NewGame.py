@@ -259,6 +259,7 @@ class NewGame(Frame):
             relief=cfg.relief,
             highlightthickness=cfg.border_thick,
             highlightbackground=cfg.border_color,
+            command=lambda: self.master.switch_to(Play),
         )
         start_game_but.place(
             anchor="center",
