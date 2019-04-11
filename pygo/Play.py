@@ -1,6 +1,8 @@
 from tkinter import *
 
+from Config import config as cfg
 import Utils as tls
+
 from Game import Game
 
 
@@ -11,7 +13,7 @@ class Board(Frame):
 
 
 class Play(Frame):
-    def __init__(self, master, game_name, dimension, players):
+    def __init__(self, master, new_game, game_name, dimension, players):
         Frame.__init__(self, master)
 
         self.configure(background=cfg.bg_color)
@@ -23,7 +25,7 @@ class Play(Frame):
 
         self.game = Game(self.dimension, self.n_players)
 
-        from Start import Start
+        # from Start import Start
 
         playing_str = "Playing:"
         relw_playing_str = tls.getRelW(
@@ -42,7 +44,7 @@ class Play(Frame):
             relheight=relh_playing_str,
             relwidth=relw_playing_str,
             relx=0.2,
-            rely=0.2,
+            rely=0.05,
         )
 
         sample_name_str = "-" * 20
@@ -55,14 +57,14 @@ class Play(Frame):
             text="-",
             font=tls.crFont("start"),
             foreground=cfg.fg_color,
-            background=cfg.bg_color,
+            background='red',
         )
         name_labl.place(
             anchor="w",
             relheight=relh_name_str,
             relwidth=relw_name_str,
             relx=0.3,
-            rely=0.2,
+            rely=0.05,
         )
 
         end_str = "End game"
@@ -73,6 +75,7 @@ class Play(Frame):
         end_but = Button(
             self,
             text=end_str,
+            font=tls.crFont('start'),
             activebackground="light salmon",
             bg=cfg.bg_color,
             fg=cfg.fg_color,
@@ -84,6 +87,6 @@ class Play(Frame):
             anchor="center",
             relheight=relh_end_str,
             relwidth=relw_end_str,
-            relx=0.8,
-            rely=0.8,
+            relx=0.85,
+            rely=0.95,
         )

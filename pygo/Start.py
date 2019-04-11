@@ -1,7 +1,6 @@
 from tkinter import *
 
 from Config import config as cfg
-from NewGame import NewGame
 import Utils as tls
 
 
@@ -9,6 +8,8 @@ class Start(Frame):
     def __init__(self, master):
         Frame.__init__(self, master)
         self.configure(background=cfg.bg_color)
+
+        from NewGame import NewGame
 
         title_str = "Py-Go"
         desc_str = "An N-player Go implementation in Python using TKinter"

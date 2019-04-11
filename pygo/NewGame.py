@@ -4,6 +4,8 @@ from tkinter.colorchooser import askcolor
 from Config import config as cfg
 import Utils as tls
 
+from Start import Start
+from Play import Play
 
 class PlayerSetupWidget(Frame):
 
@@ -107,9 +109,6 @@ class NewGame(Frame):
 
         size_home = tls.getRelH(cfg.home_button_size, cfg.x_window_size, button=True)
         self.home = tls.crHome()
-
-        # Very dirty hack fix by putting all gamestates into single module
-        from Start import Start
 
         home_button = Button(
             self,
@@ -275,4 +274,4 @@ class NewGame(Frame):
         dimension = tls.getDim(self.dim_select.get())
         players = self.players.get_data()
 
-        self.master.switch_to(Play(game_name, dimension, players))
+        self.master.switch_to(Play, args=[self, game_name, dimension, players])
