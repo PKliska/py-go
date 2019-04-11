@@ -7,6 +7,7 @@ import Utils as tls
 from Start import Start
 from Play import Play
 
+
 class PlayerSetupWidget(Frame):
 
     DEFAULT_COLORS = cfg.DEFAULT_COLORS

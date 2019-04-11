@@ -1,13 +1,24 @@
 def smaller(n):
-	return int(round(n*0.7))
+    return int(round(n * 0.7))
+
 
 def makeSmaller(obj):
-	attr_list = ['x_window_size', 'y_window_size', 'border_thin', 'border_thick', 'home_button_size', 
-	'desc_font_size', 'query_font_size', 'start_font_size', 'title_font_size']
-	for attr in dir(obj):
-		if not callable(getattr(obj, attr)) and not attr.startswith("__"):
-			if attr in attr_list:
-				exec('config.{0} = smaller(config.{0})'.format(attr))
+    attr_list = [
+        "x_window_size",
+        "y_window_size",
+        "border_thin",
+        "border_thick",
+        "home_button_size",
+        "desc_font_size",
+        "query_font_size",
+        "start_font_size",
+        "title_font_size",
+    ]
+    for attr in dir(obj):
+        if not callable(getattr(obj, attr)) and not attr.startswith("__"):
+            if attr in attr_list:
+                exec("config.{0} = smaller(config.{0})".format(attr))
+
 
 class ConfigStruct:
     def __init__(self):
@@ -37,6 +48,15 @@ class ConfigStruct:
         self.dim_options = ["9x9", "13x13", "17x17", "19x19"]
         self.DEFAULT_COLORS = ["black", "white", "red", "green", "blue", "violet"]
 
+        self.b_button_size = 200
+        self.b_circle_rad = 50
+        self.b_width = 4
+        self.b_circle_pos = (100, 100)
+        self.b_start_poss = [(100, 0), (200, 100), (100, 200), (0, 100)]
+        self.b_end_poss = [(100, 50), (150, 100), (100, 150), (50, 100)]
+        self.bcr_start_poss = self.b_circle_pos
+        self.bcr_end_poss = [(100, 100)] * 4
+
 
 config = ConfigStruct()
-makeSmaller(config)
+# makeSmaller(config)

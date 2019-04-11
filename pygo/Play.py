@@ -52,14 +52,15 @@ class Play(Frame):
         relw_name_str = tls.getRelW(
             sample_name_str, cfg.start_font_size, cfg.x_window_size
         )
-        name_labl = Label(
+        self.name_str = "-"
+        self.name_labl = Label(
             self,
-            text="-",
+            text=name_str,
             font=tls.crFont("start"),
             foreground=cfg.fg_color,
-            background='red',
+            background="red",
         )
-        name_labl.place(
+        self.name_labl.place(
             anchor="w",
             relheight=relh_name_str,
             relwidth=relw_name_str,
@@ -75,7 +76,7 @@ class Play(Frame):
         end_but = Button(
             self,
             text=end_str,
-            font=tls.crFont('start'),
+            font=tls.crFont("start"),
             activebackground="light salmon",
             bg=cfg.bg_color,
             fg=cfg.fg_color,
@@ -90,3 +91,5 @@ class Play(Frame):
             relx=0.85,
             rely=0.90,
         )
+
+        self.board = Board(self)
