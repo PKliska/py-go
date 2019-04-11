@@ -5,30 +5,30 @@ from PIL import Image, ImageTk
 from Config import config as cfg
 
 
-def getRelW(text_str, font_size, x_window_size, button=False):
+def get_rel_w(text_str, font_size, x_window_size, button=False):
     mult = 0.9
     if button:
         mult *= 1.25
     return ((len(text_str) * font_size / x_window_size)) * mult
 
 
-def getRelH(font_size, y_window_size, button=False):
+def get_rel_h(font_size, y_window_size, button=False):
     mult = 1.8
     if button:
         mult *= 1.25
     return (font_size / y_window_size) * mult
 
 
-def getDim(dim_str):
+def get_dim(dim_str):
     return int(dim_str.split("x")[0])
 
 
-def removeChildren(root):
+def remove_children(root):
     for child in root.winfo_children():
         child.destroy()
 
 
-def crFont(font_str):
+def create_font(font_str):
 
     size = None
 
@@ -44,7 +44,7 @@ def crFont(font_str):
     return Font(family=cfg.font_family, size=size)
 
 
-def crHome():
+def create_home():
     return ImageTk.PhotoImage(
         Image.open(cfg.home_icon).resize(
             (cfg.home_button_size, cfg.home_button_size), Image.ANTIALIAS
@@ -52,7 +52,7 @@ def crHome():
     )
 
 
-def surfTkImage(surface):
+def surf_tkimage(surface):
     image_str = pyg.image.tostring(surface, "RGB")
     width, height = surface.get_rect()[2:]
     image = Image.fromstring("RGB", (width, height), image_str)

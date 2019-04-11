@@ -20,7 +20,7 @@ class PlayerSetupWidget(Frame):
             self.name_entry = Entry(
                 self,
                 bg=cfg.bg_color,
-                font=tls.crFont("query"),
+                font=tls.create_font("query"),
                 fg=cfg.fg_color,
                 relief=cfg.relief,
             )
@@ -28,7 +28,7 @@ class PlayerSetupWidget(Frame):
             self.color_button = Button(
                 self,
                 text=" ",
-                font=tls.crFont("query"),
+                font=tls.create_font("query"),
                 bg=color,
                 relief=cfg.relief,
                 command=self.change_color,
@@ -37,7 +37,7 @@ class PlayerSetupWidget(Frame):
             self.remove_button = Button(
                 self,
                 text="-",
-                font=tls.crFont("query"),
+                font=tls.create_font("query"),
                 bg=cfg.bg_color,
                 relief=cfg.relief,
                 command=self.remove_player,
@@ -61,7 +61,7 @@ class PlayerSetupWidget(Frame):
         self.add_player_button = Button(
             self,
             text="Add player",
-            font=tls.crFont("query"),
+            font=tls.create_font("query"),
             bg=cfg.bg_color,
             fg=cfg.fg_color,
             relief=cfg.relief,
@@ -108,8 +108,8 @@ class NewGame(Frame):
         Frame.__init__(self, master)
         self.configure(background=cfg.bg_color)
 
-        size_home = tls.getRelH(cfg.home_button_size, cfg.x_window_size, button=True)
-        self.home = tls.crHome()
+        size_home = tls.get_rel_h(cfg.home_button_size, cfg.x_window_size, button=True)
+        self.home = tls.create_home()
 
         home_button = Button(
             self,
@@ -133,19 +133,19 @@ class NewGame(Frame):
         name_entry_str = "Game name:"
         dimension_str = "Dimension:"
 
-        relh_name_entry = tls.getRelH(cfg.start_font_size, cfg.y_window_size)
+        relh_name_entry = tls.get_rel_h(cfg.start_font_size, cfg.y_window_size)
         relh_dimension = relh_name_entry
-        relw_name_entry = tls.getRelW(
+        relw_name_entry = tls.get_rel_w(
             name_entry_str, cfg.start_font_size, cfg.x_window_size
         )
-        relw_dimension = tls.getRelW(
+        relw_dimension = tls.get_rel_w(
             dimension_str, cfg.start_font_size, cfg.x_window_size
         )
 
         game_query_labl = Label(
             self,
             text=name_entry_str,
-            font=tls.crFont("start"),
+            font=tls.create_font("start"),
             foreground=cfg.fg_color,
             background=cfg.bg_color,
         )
@@ -160,7 +160,7 @@ class NewGame(Frame):
         dimension_labl = Label(
             self,
             text=dimension_str,
-            font=tls.crFont("start"),
+            font=tls.create_font("start"),
             foreground=cfg.fg_color,
             background=cfg.bg_color,
             borderwidth=5,
@@ -174,14 +174,14 @@ class NewGame(Frame):
         )
 
         game_name_chars = 20
-        relw_game_name = tls.getRelW(
+        relw_game_name = tls.get_rel_w(
             "-" * game_name_chars, cfg.start_font_size, cfg.x_window_size
         )
 
         self.game_name_entry = Entry(
             self,
             bg=cfg.bg_color,
-            font=tls.crFont("start"),
+            font=tls.create_font("start"),
             fg=cfg.fg_color,
             relief=cfg.relief,
         )
@@ -197,7 +197,9 @@ class NewGame(Frame):
         self.dim_select = StringVar(self)
         self.dim_select.set(dim_options[-1])
 
-        relw_opt = tls.getRelW(dim_options[-1], cfg.start_font_size, cfg.x_window_size)
+        relw_opt = tls.get_rel_w(
+            dim_options[-1], cfg.start_font_size, cfg.x_window_size
+        )
         relh_opt = relh_name_entry
 
         option_menu = OptionMenu(self, self.dim_select, *dim_options)
@@ -206,7 +208,7 @@ class NewGame(Frame):
             activeforeground="black",
             background=cfg.bg_color,
             foreground=cfg.fg_color,
-            font=tls.crFont("start"),
+            font=tls.create_font("start"),
             disabledforeground=cfg.bg_color,
             highlightthickness=cfg.border_thin,
             relief=cfg.relief,
@@ -220,13 +222,13 @@ class NewGame(Frame):
         )
 
         play_str = "Players:"
-        relh_play_str = tls.getRelH(cfg.start_font_size, cfg.y_window_size)
-        relw_play_str = tls.getRelW(play_str, cfg.start_font_size, cfg.x_window_size)
+        relh_play_str = tls.get_rel_h(cfg.start_font_size, cfg.y_window_size)
+        relw_play_str = tls.get_rel_w(play_str, cfg.start_font_size, cfg.x_window_size)
 
         play_title = Label(
             self,
             text=play_str,
-            font=tls.crFont("start"),
+            font=tls.create_font("start"),
             foreground=cfg.fg_color,
             background=cfg.bg_color,
         )
@@ -242,24 +244,24 @@ class NewGame(Frame):
         self.players.place(anchor="n", relx=0.5, rely=0.4)
 
         start_game_str = "Start game!"
-        relh_start_str = tls.getRelH(
+        relh_start_str = tls.get_rel_h(
             cfg.start_font_size, cfg.y_window_size, button=True
         )
-        relw_start_str = tls.getRelW(
+        relw_start_str = tls.get_rel_w(
             start_game_str, cfg.start_font_size, cfg.x_window_size
         )
 
         start_game_but = Button(
             self,
             text=start_game_str,
-            font=tls.crFont("start"),
+            font=tls.create_font("start"),
             activebackground="pale green",
             bg=cfg.bg_color,
             fg=cfg.fg_color,
             relief=cfg.relief,
             highlightthickness=cfg.border_thick,
             highlightbackground=cfg.border_color,
-            command=lambda: self.switchToPlay(),
+            command=lambda: self.switch_to_play(),
         )
         start_game_but.place(
             anchor="center",
@@ -269,10 +271,10 @@ class NewGame(Frame):
             rely=0.9,
         )
 
-    def switchToPlay(self):
+    def switch_to_play(self):
 
         game_name = self.game_name_entry.get().strip()
-        dimension = tls.getDim(self.dim_select.get())
+        dimension = tls.get_dim(self.dim_select.get())
         players = self.players.get_data()
 
         self.master.switch_to(Play, args=[self, game_name, dimension, players])

@@ -1,8 +1,7 @@
-def smaller(n):
-    return int(round(n * 0.7))
+def make_smaller(obj, name):
+    def smaller(n):
+        return int(round(n * 0.7))
 
-
-def makeSmaller(obj):
     attr_list = [
         "x_window_size",
         "y_window_size",
@@ -17,7 +16,7 @@ def makeSmaller(obj):
     for attr in dir(obj):
         if not callable(getattr(obj, attr)) and not attr.startswith("__"):
             if attr in attr_list:
-                exec("config.{0} = smaller(config.{0})".format(attr))
+                exec("{0}.{1} = smaller({0}.{1})".format(name, attr))
 
 
 class ConfigStruct:
@@ -59,4 +58,4 @@ class ConfigStruct:
 
 
 config = ConfigStruct()
-# makeSmaller(config)
+make_smaller(config, "config")

@@ -41,14 +41,14 @@ class Play(Frame):
         # from Start import Start
 
         playing_str = "Playing:"
-        relw_playing_str = tls.getRelW(
+        relw_playing_str = tls.get_rel_w(
             playing_str, cfg.start_font_size, cfg.x_window_size
         )
-        relh_playing_str = tls.getRelH(cfg.start_font_size, cfg.y_window_size)
+        relh_playing_str = tls.get_rel_h(cfg.start_font_size, cfg.y_window_size)
         playing_labl = Label(
             self,
             text=playing_str,
-            font=tls.crFont("start"),
+            font=tls.create_font("start"),
             foreground=cfg.fg_color,
             background=cfg.bg_color,
         )
@@ -62,14 +62,14 @@ class Play(Frame):
 
         sample_name_str = "-" * 20
         relh_name_str = relh_playing_str
-        relw_name_str = tls.getRelW(
+        relw_name_str = tls.get_rel_w(
             sample_name_str, cfg.start_font_size, cfg.x_window_size
         )
         self.name_str = "-"
         self.name_labl = Label(
             self,
-            text=name_str,
-            font=tls.crFont("start"),
+            text=self.name_str,
+            font=tls.create_font("start"),
             foreground=cfg.fg_color,
             background="red",
         )
@@ -82,14 +82,16 @@ class Play(Frame):
         )
 
         end_str = "End game"
-        relh_end_str = tls.getRelH(cfg.start_font_size, cfg.y_window_size, button=True)
-        relw_end_str = tls.getRelW(
+        relh_end_str = tls.get_rel_h(
+            cfg.start_font_size, cfg.y_window_size, button=True
+        )
+        relw_end_str = tls.get_rel_w(
             end_str, cfg.start_font_size, cfg.x_window_size, button=True
         )
         end_but = Button(
             self,
             text=end_str,
-            font=tls.crFont("start"),
+            font=tls.create_font("start"),
             activebackground="light salmon",
             bg=cfg.bg_color,
             fg=cfg.fg_color,

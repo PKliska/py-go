@@ -16,23 +16,23 @@ class Start(Frame):
         new_game_str = "New game"
         saved_games_str = "Saved games"
 
-        relw_title = tls.getRelW(title_str, cfg.title_font_size, cfg.x_window_size)
-        relw_desc = tls.getRelW(desc_str, cfg.desc_font_size, cfg.x_window_size)
-        relw_new = tls.getRelW(
+        relw_title = tls.get_rel_w(title_str, cfg.title_font_size, cfg.x_window_size)
+        relw_desc = tls.get_rel_w(desc_str, cfg.desc_font_size, cfg.x_window_size)
+        relw_new = tls.get_rel_w(
             new_game_str, cfg.start_font_size, cfg.x_window_size, button=True
         )
-        relw_saved = tls.getRelW(
+        relw_saved = tls.get_rel_w(
             saved_games_str, cfg.start_font_size, cfg.x_window_size, button=True
         )
 
-        relh_title = tls.getRelH(cfg.title_font_size, cfg.y_window_size)
-        relh_desc = tls.getRelH(cfg.desc_font_size, cfg.y_window_size)
-        relh_new = tls.getRelH(cfg.start_font_size, cfg.y_window_size, button=True)
-        relh_saved = tls.getRelH(cfg.start_font_size, cfg.y_window_size, button=True)
+        relh_title = tls.get_rel_h(cfg.title_font_size, cfg.y_window_size)
+        relh_desc = tls.get_rel_h(cfg.desc_font_size, cfg.y_window_size)
+        relh_new = tls.get_rel_h(cfg.start_font_size, cfg.y_window_size, button=True)
+        relh_saved = tls.get_rel_h(cfg.start_font_size, cfg.y_window_size, button=True)
         title_labl = Label(
             self,
             text=title_str,
-            font=tls.crFont("title"),
+            font=tls.create_font("title"),
             foreground=cfg.fg_color,
             background=cfg.bg_color,
         )
@@ -47,7 +47,7 @@ class Start(Frame):
         desc_labl = Label(
             self,
             text=desc_str,
-            font=tls.crFont("desc"),
+            font=tls.create_font("desc"),
             foreground=cfg.fg_color,
             background=cfg.bg_color,
         )
@@ -64,7 +64,7 @@ class Start(Frame):
             text=new_game_str,
             activebackground="pale green",
             bg=cfg.bg_color,
-            font=tls.crFont("start"),
+            font=tls.create_font("start"),
             fg=cfg.fg_color,
             relief=cfg.relief,
             highlightthickness=cfg.border_thick,
@@ -80,7 +80,7 @@ class Start(Frame):
             text=saved_games_str,
             activebackground="khaki",
             bg=cfg.bg_color,
-            font=tls.crFont("start"),
+            font=tls.create_font("start"),
             fg=cfg.fg_color,
             relief=cfg.relief,
             highlightthickness=cfg.border_thick,
