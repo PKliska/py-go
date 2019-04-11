@@ -1,3 +1,14 @@
+def smaller(n):
+	return int(round(n*0.7))
+
+def makeSmaller(obj):
+	attr_list = ['x_window_size', 'y_window_size', 'border_thin', 'border_thick', 'home_button_size', 
+	'desc_font_size', 'query_font_size', 'start_font_size', 'title_font_size']
+	for attr in dir(obj):
+		if not callable(getattr(obj, attr)) and not attr.startswith("__"):
+			if attr in attr_list:
+				exec('config.{0} = smaller(config.{0})'.format(attr))
+
 class ConfigStruct:
     def __init__(self):
         self.x_window_size = 1000
@@ -28,3 +39,4 @@ class ConfigStruct:
 
 
 config = ConfigStruct()
+makeSmaller(config)

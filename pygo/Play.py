@@ -88,5 +88,5 @@ class Play(Frame):
             relheight=relh_end_str,
             relwidth=relw_end_str,
             relx=0.85,
-            rely=0.95,
+            rely=0.90,
         )
