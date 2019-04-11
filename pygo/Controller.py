@@ -1,8 +1,6 @@
 from tkinter import *
 
 from Start import Start
-from NewGame import NewGame
-
 
 class Controller(Frame):
     def __init__(self, master):

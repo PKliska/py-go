@@ -1,3 +1,4 @@
+import pygame as pyg
 from tkinter.font import Font
 from PIL import Image, ImageTk
 
@@ -49,3 +50,10 @@ def crHome():
             (cfg.home_button_size, cfg.home_button_size), Image.ANTIALIAS
         )
     )
+
+
+def surfTkImage(surface):
+    image_str = pyg.image.tostring(surface, "RGB")
+    width, height = surface.get_rect()[2:]
+    image = Image.fromstring("RGB", (width, height), image_str)
+    return image

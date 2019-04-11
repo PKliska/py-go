@@ -11,6 +11,19 @@ class Board(Frame):
         Frame.__init__(self, parent)
         self.parent = parent
 
+    def _angle(self, i, j):
+        n = parent.dimension - 1
+        angle = 0
+
+        if i != 0 and j == 0:
+            angle = 90
+        elif i == n and 0 < j < n:
+            angle = 180
+        elif j == n:
+            angle = 270
+
+        return angle
+
 
 class Play(Frame):
     def __init__(self, master, new_game, game_name, dimension, players):
