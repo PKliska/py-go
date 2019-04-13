@@ -44,16 +44,17 @@ def create_font(font_str):
     return Font(family=cfg.font_family, size=size)
 
 
-def create_home():
+def create_home(x_size=cfg.home_button_size, y_size=cfg.home_button_size):
     return ImageTk.PhotoImage(
         Image.open(cfg.home_icon).resize(
-            (cfg.home_button_size, cfg.home_button_size), Image.ANTIALIAS
+            (x_size, y_size), Image.ANTIALIAS
         )
     )
 
 
-def surf_tkimage(surface):
+def surf_tkimage(surface, width, height):
     image_str = pyg.image.tostring(surface, "RGB")
-    width, height = surface.get_rect()[2:]
-    image = Image.fromstring("RGB", (width, height), image_str)
+    w, h = surface.get_rect()[2:]
+    image = Image.frombytes("RGB", (w, h), image_str)
+    image.resize((width, height))
     return image
