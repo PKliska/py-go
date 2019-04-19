@@ -14,19 +14,20 @@ class Board(Frame):
         self.parent = parent
         self.but_mat = [[None] * self.parent.dimension for i in range(self.parent.dimension)]
         self.but_size = self._get_button_size()
+        self._images = []
 
         for i in range(self.parent.dimension):
-            self.parent.grid_rowconfigure(i, minsize=self.but_size)
-            self.parent.grid_columnconfigure(i, minsize=self.but_size)
+            self.parent.grid_rowconfigure(i, minsize=self.but_size, pad=0)
+            self.parent.grid_columnconfigure(i, minsize=self.but_size, pad=0)
 
 
         for i in range(self.parent.dimension):
             for j in range(self.parent.dimension):
-                surf = draw.empty_middle()
+                surf = draw.circle_border((255, 0, 0))
                 but_image = tls.surf_tkimage(surf, self.but_size, self.but_size)
-                but_image = ImageTk.PhotoImage(but_image)
-                but = Button(self, image=but_image, height=self.but_size, width=self.but_size)
-                but.grid(row=i, column=j)
+                but = Button(self, image=but_image, height=self.but_size, width=self.but_size, borderwidth=0)
+                self._images.append(but_image) #indescribably ugly
+                but.grid(row=i, column=j, padx=0, pady=0, ipadx=0, ipady=0)
                 self.but_mat[i][j] = but
 
 
