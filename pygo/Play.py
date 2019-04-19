@@ -11,6 +11,7 @@ from Game import Game
 class Board(Frame):
     def __init__(self, parent):
         Frame.__init__(self, parent)
+        self.configure(background=cfg.bg_color)
         self.parent = parent
         self.but_mat = [[None] * self.parent.dimension for i in range(self.parent.dimension)]
         self.but_size = self._get_button_size()
@@ -25,9 +26,9 @@ class Board(Frame):
             for j in range(self.parent.dimension):
                 surf = draw.circle_border((255, 0, 0))
                 but_image = tls.surf_tkimage(surf, self.but_size, self.but_size)
-                but = Button(self, image=but_image, height=self.but_size, width=self.but_size, borderwidth=0)
-                self._images.append(but_image) #indescribably ugly
-                but.grid(row=i, column=j, padx=0, pady=0, ipadx=0, ipady=0)
+                but = Button(self, image=but_image, height=self.but_size, width=self.but_size, bd=0, highlightthickness=0, relief=FLAT, bg=cfg.bg_color)
+                but.image = but_image
+                but.grid(row=i, column=j, padx=0, pady=0, ipadx=0, ipady=0, sticky="NSEW")
                 self.but_mat[i][j] = but
 
 
