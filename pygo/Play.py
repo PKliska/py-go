@@ -25,8 +25,6 @@ class BoardWidget(Frame):
             self.canvas.create_line(1, i, 2 * dim - 1, i)
             self.canvas.create_line(i, 1, i, 2 * dim - 1)
 
-        self.label_update()
-
         # Create stones
         def enter_stone(stone):
             def f(_):
@@ -76,18 +74,6 @@ class BoardWidget(Frame):
                 color = self.game.players[self.game.board[row][col]]["color"]
                 self.canvas.itemconfig(stone, fill=color)
         self.event_generate("<<MoveMade>>")
-
-        self.label_update()
-
-    def label_update(self):
-        player_text = self.game.players[self.game.current_player]["name"]
-        player_color = self.game.players[self.game.current_player]["color"]
-        if player_color == "white":
-            label_bg = cfg.fg_color
-        else:
-            label_bg = cfg.bg_color
-        self.parent.name_labl.configure(text=player_text, fg=player_color, bg=label_bg)
-        self.parent.name_labl.update()
 
 
 class Play(Frame):
@@ -169,7 +155,9 @@ class Play(Frame):
 
         self.board = BoardWidget(self, self.game)
         self.board.bind("<<MoveMade>>", self.update_labels)
-        self.board.place(anchor='center', relx=0.5, rely=0.5, relwidth=0.7, relheight=0.7)
+        self.board.place(
+            anchor="center", relx=0.5, rely=0.5, relwidth=0.7, relheight=0.7
+        )
         self.update_labels()
 
     def update_labels(self, event=None):
@@ -180,6 +168,8 @@ class Play(Frame):
             text_color = "black"
         else:
             text_color = "white"
-        self.name_labl.config(text=current_player_name,
-                              background=current_player_color,
-                              foreground=text_color)
+        self.name_labl.config(
+            text=current_player_name,
+            background=current_player_color,
+            foreground=text_color,
+        )

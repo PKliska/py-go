@@ -23,8 +23,9 @@ class ResizeableCanvas(Canvas):
         self.config(width=self.width, height=self.height)
         self.scale(ALL, 0, 0, wscale, hscale)
 
+
 def hex_to_hls(hex):
-    r, g, b = map(lambda x: int(x, 16)/255, (hex[1:3], hex[3:5], hex[5:7]))
+    r, g, b = map(lambda x: int(x, 16) / 255, (hex[1:3], hex[3:5], hex[5:7]))
     return rgb_to_hls(r, g, b)
 
 
