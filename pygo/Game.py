@@ -13,12 +13,13 @@ def saveGame(game, fname):
 
 
 class Game:
-    def __init__(self, dim, n_player):
+    def __init__(self, name, dim, players):
+        self.name = name
         self.board = [[None] * dim for i in range(dim)]
-        self.ko_protected = [None] * n_player
+        self.ko_protected = [None] * len(players)
+        self.players = players
         self.current_player = 0
         self.dimension = dim
-        self.n_player = n_player
         self.t_total = 0
         self.t_end = None
 
@@ -53,7 +54,7 @@ class Game:
                 to_clear.append(i)
 
         if (
-            self.n_player == 2
+            len(self.players) == 2
             and len(to_clear) == 1
             and len(list(self.group(*to_clear[0]))) == 1
         ):
@@ -72,7 +73,7 @@ class Game:
         if self.ko_protected[self.current_player] is not None:
             self.ko_protected[self.current_player] = None
         self.place_stone_as(row, col, self.current_player)
-        self.current_player = (self.current_player + 1) % self.n_player
+        self.current_player = (self.current_player + 1) % len(self.players)
 
     def neighbours(self, row, col):
         """Iterator over all the neighbouring stones to stone at row, col."""
@@ -121,7 +122,7 @@ class Game:
 
     def __str__(self):
         r = "A {0}x{0} game with {1} players. Player {2} plays next \n".format(
-            self.dimension, self.n_player, self.current_player
+            self.dimension, len(self.players), self.current_player
         )
         for i in self.board:
             for j in i:
