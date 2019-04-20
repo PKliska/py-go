@@ -3,6 +3,7 @@ from tkinter import Canvas, ALL
 from tkinter.font import Font
 from PIL import Image, ImageTk
 
+from colorsys import rgb_to_hls
 from Config import config as cfg
 
 class ResizeableCanvas(Canvas):
@@ -21,6 +22,10 @@ class ResizeableCanvas(Canvas):
         self.height = event.height
         self.config(width=self.width, height=self.height)
         self.scale(ALL, 0, 0, wscale, hscale)
+
+def hex_to_hls(hex):
+    r, g, b = map(lambda x: int(x, 16)/255, (hex[1:3], hex[3:5], hex[5:7]))
+    return rgb_to_hls(r, g, b)
 
 
 def get_rel_w(text_str, font_size, x_window_size, button=False):

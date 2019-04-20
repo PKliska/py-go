@@ -1,5 +1,6 @@
 from tkinter import *
 import traceback
+import colorsys
 
 from Config import config as cfg
 from PIL import ImageTk
@@ -71,6 +72,7 @@ class BoardWidget(Frame):
             else:
                 color = self.game.players[self.game.board[row][col]]["color"]
                 self.canvas.itemconfig(stone, fill=color)
+        self.event_generate("<<MoveMade>>")
 
 
 class Play(Frame):
@@ -78,6 +80,8 @@ class Play(Frame):
         Frame.__init__(self, parent)
 
         self.configure(background=cfg.bg_color)
+
+        self.game = game
 
         # from Start import Start
 
@@ -148,5 +152,19 @@ class Play(Frame):
             rely=0.90,
         )
 
-        self.board = BoardWidget(self, game)
+        self.board = BoardWidget(self, self.game)
+        self.board.bind("<<MoveMade>>", self.update_labels)
         self.board.place(anchor='center', relx=0.5, rely=0.5, relwidth=0.7, relheight=0.7)
+        self.update_labels()
+
+    def update_labels(self, event=None):
+        current_player_name = self.game.players[self.game.current_player]["name"]
+        current_player_color = self.game.players[self.game.current_player]["color"]
+        lightness = tls.hex_to_hls(current_player_color)[1]
+        if lightness > 0.5:
+            text_color = "black"
+        else:
+            text_color = "white"
+        self.name_labl.config(text=current_player_name,
+                              background=current_player_color,
+                              foreground=text_color)

@@ -45,7 +45,7 @@ class ConfigStruct:
         self.title_font_size = 70
 
         self.dim_options = ["9x9", "13x13", "17x17", "19x19"]
-        self.DEFAULT_COLORS = ["black", "white", "red", "green", "blue", "violet"]
+        self.DEFAULT_COLORS = ["#000000", "#ffffff", "#ff0000", "#008000", "#0000ff", "#ee82ee"]
 
         self.b_button_size = 200
         self.b_circle_rad = 50
