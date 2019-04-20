@@ -54,8 +54,7 @@ class PlayerSetupWidget(Frame):
             self.color_button.config(bg=self.color)
 
         def get_data(self):
-            return {"name": self.name_entry.get(),
-                    "color": self.color}
+            return {"name": self.name_entry.get(), "color": self.color}
 
     def __init__(self, parent):
         Frame.__init__(self, parent)
@@ -274,7 +273,7 @@ class NewGame(Frame):
         )
 
     def switch_to_play(self):
-        
+
         name = self.game_name_entry.get().strip()
         dimension = tls.get_dim(self.dim_select.get())
         players = self.players.get_data()

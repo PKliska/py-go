@@ -2,15 +2,12 @@ from tkinter import *
 import traceback
 
 from Config import config as cfg
-from PIL import ImageTk
 import Utils as tls
-import Draw as draw
 
 from Game import Game
 
 
 class BoardWidget(Frame):
-
     def __init__(self, parent, game):
         Frame.__init__(self, parent)
 
@@ -19,15 +16,17 @@ class BoardWidget(Frame):
         self.stone_location = {}
 
         dim = self.game.dimension
-        self.canvas = tls.ResizeableCanvas(self, width=2*dim, height=2*dim)
-        self.canvas.configure(background = "navajo white")
+        self.canvas = tls.ResizeableCanvas(self, width=2 * dim, height=2 * dim)
+        self.canvas.configure(background=cfg.board_color)
 
-        #Create lines
-        for i in range(1, 2*dim, 2):
-            self.canvas.create_line(1, i, 2*dim-1, i)
-            self.canvas.create_line(i, 1, i, 2*dim-1)
+        # Create lines
+        for i in range(1, 2 * dim, 2):
+            self.canvas.create_line(1, i, 2 * dim - 1, i)
+            self.canvas.create_line(i, 1, i, 2 * dim - 1)
 
-        #Create stones\
+        self.label_update()
+
+        # Create stones
         def enter_stone(stone):
             def f(_):
                 row, col = self.stone_location[stone]
@@ -36,6 +35,7 @@ class BoardWidget(Frame):
                     self.canvas.itemconfig(stone, fill=color)
 
             return f
+
         def leave_stone(stone):
             def f(_):
                 row, col = self.stone_location[stone]
@@ -43,20 +43,23 @@ class BoardWidget(Frame):
                     self.canvas.itemconfig(stone, fill="")
 
             return f
+
         def place_stone(stone):
             def f(_):
                 row, col = self.stone_location[stone]
                 try:
-                    color = self.game.players[self.game.current_player]["color"]
                     self.game.play_stone(row, col)
                     self.update()
                 except Exception as e:
                     traceback.print_exc(e)
+
             return f
 
         for i in range(dim):
             for j in range(dim):
-                stone = self.canvas.create_oval(2*i, 2*j, 2*(i+1), 2*(j+1), fill="", outline="")
+                stone = self.canvas.create_oval(
+                    2 * i, 2 * j, 2 * (i + 1), 2 * (j + 1), fill="", outline=""
+                )
                 self.canvas.tag_bind(stone, "<Enter>", enter_stone(stone))
                 self.canvas.tag_bind(stone, "<Leave>", leave_stone(stone))
                 self.canvas.tag_bind(stone, "<Button>", place_stone(stone))
@@ -71,6 +74,18 @@ class BoardWidget(Frame):
             else:
                 color = self.game.players[self.game.board[row][col]]["color"]
                 self.canvas.itemconfig(stone, fill=color)
+
+        self.label_update()
+
+    def label_update(self):
+        player_text = self.game.players[self.game.current_player]["name"]
+        player_color = self.game.players[self.game.current_player]["color"]
+        if player_color == "white":
+            label_bg = cfg.fg_color
+        else:
+            label_bg = cfg.bg_color
+        self.parent.name_labl.configure(text=player_text, fg=player_color, bg=label_bg)
+        self.parent.name_labl.update()
 
 
 class Play(Frame):
@@ -106,13 +121,13 @@ class Play(Frame):
         relw_name_str = tls.get_rel_w(
             sample_name_str, cfg.start_font_size, cfg.x_window_size
         )
-        self.name_str = "-"
+
         self.name_labl = Label(
             self,
-            text=self.name_str,
+            text="-",
             font=tls.create_font("start"),
             foreground=cfg.fg_color,
-            background="red",
+            background=cfg.bg_color,
         )
         self.name_labl.place(
             anchor="w",
@@ -149,4 +164,6 @@ class Play(Frame):
         )
 
         self.board = BoardWidget(self, game)
-        self.board.place(anchor='center', relx=0.5, rely=0.5, relwidth=0.7, relheight=0.7)
+        self.board.place(
+            anchor="center", relx=0.5, rely=0.5, relwidth=0.7, relheight=0.7
+        )

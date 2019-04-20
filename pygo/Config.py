@@ -28,6 +28,7 @@ class ConfigStruct:
 
         self.bg_color = "ghost white"
         self.fg_color = "black"
+        self.board_color = self.bg_color
 
         self.border_color = "black"
         self.border_thick = 5

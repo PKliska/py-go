@@ -5,18 +5,18 @@ from PIL import Image, ImageTk
 
 from Config import config as cfg
 
-class ResizeableCanvas(Canvas):
 
+class ResizeableCanvas(Canvas):
     def __init__(self, parent, **kwargs):
-        kwargs["highlightthickness"]=0
+        kwargs["highlightthickness"] = 0
         Canvas.__init__(self, parent, **kwargs)
         self.bind("<Configure>", self.on_resize)
         self.height = self.winfo_reqheight()
         self.width = self.winfo_reqwidth()
 
     def on_resize(self, event):
-        wscale = event.width/self.width
-        hscale = event.height/self.height
+        wscale = event.width / self.width
+        hscale = event.height / self.height
         self.width = event.width
         self.height = event.height
         self.config(width=self.width, height=self.height)
@@ -64,9 +64,7 @@ def create_font(font_str):
 
 def create_home(x_size=cfg.home_button_size, y_size=cfg.home_button_size):
     return ImageTk.PhotoImage(
-        Image.open(cfg.home_icon).resize(
-            (x_size, y_size), Image.ANTIALIAS
-        )
+        Image.open(cfg.home_icon).resize((x_size, y_size), Image.ANTIALIAS)
     )
 
 
