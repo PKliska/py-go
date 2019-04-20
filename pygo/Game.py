@@ -93,12 +93,13 @@ class Game:
             raise ValueError("Position is outside of the board")
         visited = set()
         to_visit = [(row, col)]
+        player = self.board[row][col]
         while len(to_visit) > 0:
             c = to_visit.pop()
             visited.add(c)
             yield c
             for i in self.neighbours(c[0], c[1]):
-                if i not in visited and self.board[i[0]][i[1]] == self.board[row][col]:
+                if i not in visited and self.board[i[0]][i[1]] == player:
                     to_visit.append(i)
 
     def clear_group(self, row, col):
