@@ -167,12 +167,6 @@ class Play(Frame):
             rely=0.90,
         )
 
-<<<<<<< HEAD
-        self.board = BoardWidget(self, game)
-        self.board.place(
-            anchor="center", relx=0.5, rely=0.5, relwidth=0.7, relheight=0.7
-        )
-=======
         self.board = BoardWidget(self, self.game)
         self.board.bind("<<MoveMade>>", self.update_labels)
         self.board.place(anchor='center', relx=0.5, rely=0.5, relwidth=0.7, relheight=0.7)
@@ -189,4 +183,3 @@ class Play(Frame):
         self.name_labl.config(text=current_player_name,
                               background=current_player_color,
                               foreground=text_color)
->>>>>>> 383a5a68088071e8e610bd5b1c594bf4d447d486
