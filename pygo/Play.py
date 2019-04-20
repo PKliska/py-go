@@ -1,4 +1,5 @@
 from tkinter import *
+import traceback
 
 from Config import config as cfg
 from PIL import ImageTk
@@ -8,58 +9,75 @@ import Draw as draw
 from Game import Game
 
 
-class Board(Frame):
-    def __init__(self, parent):
+class BoardWidget(Frame):
+
+    def __init__(self, parent, game):
         Frame.__init__(self, parent)
+
         self.parent = parent
-        self.but_mat = [[None] * self.parent.dimension for i in range(self.parent.dimension)]
-        self.but_size = self._get_button_size()
-        self._images = []
+        self.game = game
+        self.stone_location = {}
 
-        for i in range(self.parent.dimension):
-            self.parent.grid_rowconfigure(i, minsize=self.but_size, pad=0)
-            self.parent.grid_columnconfigure(i, minsize=self.but_size, pad=0)
+        dim = self.game.dimension
+        self.canvas = tls.ResizeableCanvas(self, width=2*dim, height=2*dim)
+        self.canvas.configure(background = "navajo white")
 
+        #Create lines
+        for i in range(1, 2*dim, 2):
+            self.canvas.create_line(1, i, 2*dim-1, i)
+            self.canvas.create_line(i, 1, i, 2*dim-1)
 
-        for i in range(self.parent.dimension):
-            for j in range(self.parent.dimension):
-                surf = draw.circle_border((255, 0, 0))
-                but_image = tls.surf_tkimage(surf, self.but_size, self.but_size)
-                but = Button(self, image=but_image, height=self.but_size, width=self.but_size, borderwidth=0)
-                self._images.append(but_image) #indescribably ugly
-                but.grid(row=i, column=j, padx=0, pady=0, ipadx=0, ipady=0)
-                self.but_mat[i][j] = but
+        #Create stones\
+        def enter_stone(stone):
+            def f(_):
+                row, col = self.stone_location[stone]
+                color = self.game.players[self.game.current_player]["color"]
+                if self.game.board[row][col] is None:
+                    self.canvas.itemconfig(stone, fill=color)
 
+            return f
+        def leave_stone(stone):
+            def f(_):
+                row, col = self.stone_location[stone]
+                if self.game.board[row][col] is None:
+                    self.canvas.itemconfig(stone, fill="")
 
-    def _get_button_size(self):
-        return int(round((cfg.x_window_size*0.7)/self.parent.dimension))
+            return f
+        def place_stone(stone):
+            def f(_):
+                row, col = self.stone_location[stone]
+                try:
+                    color = self.game.players[self.game.current_player]["color"]
+                    self.game.play_stone(row, col)
+                    self.update()
+                except Exception as e:
+                    traceback.print_exc(e)
+            return f
 
-    def _angle(self, i, j):
-        n = self.parent.dimension - 1
-        angle = 0
+        for i in range(dim):
+            for j in range(dim):
+                stone = self.canvas.create_oval(2*i, 2*j, 2*(i+1), 2*(j+1), fill="", outline="")
+                self.canvas.tag_bind(stone, "<Enter>", enter_stone(stone))
+                self.canvas.tag_bind(stone, "<Leave>", leave_stone(stone))
+                self.canvas.tag_bind(stone, "<Button>", place_stone(stone))
+                self.stone_location[stone] = (i, j)
 
-        if i != 0 and j == 0:
-            angle = 90
-        elif i == n and 0 < j < n:
-            angle = 180
-        elif j == n:
-            angle = 270
+        self.canvas.pack(fill=BOTH, expand=True)
 
-        return angle
+    def update(self):
+        for stone, (row, col) in self.stone_location.items():
+            if self.game.board[row][col] is None:
+                self.canvas.itemconfig(stone, fill="")
+            else:
+                color = self.game.players[self.game.board[row][col]]["color"]
+                self.canvas.itemconfig(stone, fill=color)
 
 
 class Play(Frame):
-    def __init__(self, master, new_game, game_name, dimension, players):
-        Frame.__init__(self, master)
+    def __init__(self, parent, game):
+        Frame.__init__(self, parent)
 
         self.configure(background=cfg.bg_color)
-
-        self.game_name = game_name
-        self.dimension = dimension
-        self.players = players
-        self.n_players = len(self.players)
-
-        self.game = Game(self.dimension, self.n_players)
 
         # from Start import Start
 
@@ -130,5 +148,5 @@ class Play(Frame):
             rely=0.90,
         )
 
-        self.board = Board(self)
+        self.board = BoardWidget(self, game)
         self.board.place(anchor='center', relx=0.5, rely=0.5, relwidth=0.7, relheight=0.7)

@@ -1,8 +1,26 @@
 import pygame as pyg
+from tkinter import Canvas, ALL
 from tkinter.font import Font
 from PIL import Image, ImageTk
 
 from Config import config as cfg
+
+class ResizeableCanvas(Canvas):
+
+    def __init__(self, parent, **kwargs):
+        kwargs["highlightthickness"]=0
+        Canvas.__init__(self, parent, **kwargs)
+        self.bind("<Configure>", self.on_resize)
+        self.height = self.winfo_reqheight()
+        self.width = self.winfo_reqwidth()
+
+    def on_resize(self, event):
+        wscale = event.width/self.width
+        hscale = event.height/self.height
+        self.width = event.width
+        self.height = event.height
+        self.config(width=self.width, height=self.height)
+        self.scale(ALL, 0, 0, wscale, hscale)
 
 
 def get_rel_w(text_str, font_size, x_window_size, button=False):

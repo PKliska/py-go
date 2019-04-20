@@ -6,6 +6,7 @@ import Utils as tls
 
 from Start import Start
 from Play import Play
+from Game import Game
 
 
 class PlayerSetupWidget(Frame):
@@ -53,7 +54,8 @@ class PlayerSetupWidget(Frame):
             self.color_button.config(bg=self.color)
 
         def get_data(self):
-            return (self.name_entry.get(), self.color)
+            return {"name": self.name_entry.get(),
+                    "color": self.color}
 
     def __init__(self, parent):
         Frame.__init__(self, parent)
@@ -272,9 +274,10 @@ class NewGame(Frame):
         )
 
     def switch_to_play(self):
-
-        game_name = self.game_name_entry.get().strip()
+        
+        name = self.game_name_entry.get().strip()
         dimension = tls.get_dim(self.dim_select.get())
         players = self.players.get_data()
+        game = Game(name, dimension, players)
 
-        self.master.switch_to(Play, args=[self, game_name, dimension, players])
+        self.master.switch_to(Play, args=[game])
