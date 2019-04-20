@@ -72,10 +72,3 @@ def create_home(x_size=cfg.home_button_size, y_size=cfg.home_button_size):
     return ImageTk.PhotoImage(
         Image.open(cfg.home_icon).resize((x_size, y_size), Image.ANTIALIAS)
     )
-
-
-def surf_tkimage(surface, width, height):
-    image_str = pyg.image.tostring(surface, "RGB")
-    w, h = surface.get_rect()[2:]
-    image = Image.frombytes("RGB", (w, h), image_str).resize((width, height))
-    return ImageTk.PhotoImage(image)

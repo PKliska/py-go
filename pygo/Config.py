@@ -55,15 +55,6 @@ class ConfigStruct:
             "#ee82ee",
         ]
 
-        self.b_button_size = 200
-        self.b_circle_rad = 50
-        self.b_width = 10
-        self.b_circle_pos = [100, 100]
-        self.b_start_poss = [[100, 0], [200, 100], [100, 200], [0, 100]]
-        self.b_end_poss = [[100, 50], [150, 100], [100, 150], [50, 100]]
-        self.bcr_start_poss = self.b_start_poss
-        self.bcr_end_poss = [[100, 100]] * 4
-
 
 config = ConfigStruct()
-make_smaller(config, "config")
+# make_smaller(config, "config")
