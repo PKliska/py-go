@@ -1,11 +1,13 @@
 from tkinter import *
 import traceback
 import colorsys
+import datetime
 
 from Config import config as cfg
 import Utils as tls
 
-from Game import Game
+from Start import Start
+from Game import Game, saveGame
 
 
 class BoardWidget(Frame):
@@ -77,14 +79,14 @@ class BoardWidget(Frame):
 
 
 class Play(Frame):
-    def __init__(self, parent, game):
-        Frame.__init__(self, parent)
+    def __init__(self, master, game):
+        Frame.__init__(self, master)
 
         self.configure(background=cfg.bg_color)
 
         self.game = game
 
-        # from Start import Start
+        self.t_start = datetime.datetime.now()
 
         playing_str = "Playing:"
         relw_playing_str = tls.get_rel_w(
@@ -144,6 +146,7 @@ class Play(Frame):
             relief=cfg.relief,
             highlightthickness=cfg.border_thick,
             highlightbackground=cfg.border_color,
+            command=lambda: self.end_and_save(),
         )
         end_but.place(
             anchor="center",
@@ -173,3 +176,13 @@ class Play(Frame):
             background=current_player_color,
             foreground=text_color,
         )
+
+    def end_and_save(self):
+        t_end = datetime.datetime.now()
+        delta_t = t_end - self.t_start
+        self.game.t_total += delta_t
+        self.game.t_end = t_end
+
+        saveGame(self.game, cfg.games_dir + self.game.name + ".pickle")
+
+        self.master.switch_to(Start)

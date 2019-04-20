@@ -55,6 +55,8 @@ class ConfigStruct:
             "#ee82ee",
         ]
 
+        self.games_dir = '../games/'
+
 
 config = ConfigStruct()
 # make_smaller(config, "config")

@@ -1,14 +1,14 @@
 import pickle
-
+import datetime
 
 def loadGame(fname):
-    with open(fname, "r") as file:
+    with open(fname, "rb") as file:
         game = pickle.load(file)
     return game
 
 
 def saveGame(game, fname):
-    with open(fname, "w+") as file:
+    with open(fname, "wb") as file:
         pickle.dump(game, file, protocol=pickle.HIGHEST_PROTOCOL)
 
 
@@ -20,7 +20,7 @@ class Game:
         self.players = players
         self.current_player = 0
         self.dimension = dim
-        self.t_total = 0
+        self.t_total = datetime.timedelta(0)
         self.t_end = None
 
     def in_bounds(self, row, col):
