@@ -15,7 +15,7 @@ class Start(Frame):
         title_str = "Py-Go"
         desc_str = "An N-player Go implementation in Python using TKinter"
         new_game_str = "New game"
-        saved_games_str = "Saved games"
+        saved_games_str = "Load game"
 
         relw_title = tls.get_rel_w(title_str, cfg.title_font_size, cfg.x_window_size)
         relw_desc = tls.get_rel_w(desc_str, cfg.desc_font_size, cfg.x_window_size)
