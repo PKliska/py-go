@@ -1,3 +1,4 @@
+import os
 import pygame as pyg
 from tkinter import Canvas, ALL
 from tkinter.font import Font
@@ -67,3 +68,12 @@ def create_home(x_size=cfg.home_button_size, y_size=cfg.home_button_size):
     return ImageTk.PhotoImage(
         Image.open(cfg.home_icon).resize((x_size, y_size), Image.ANTIALIAS)
     )
+
+
+def find_files(folder, end):
+    file_arr = []
+    for root, dirs, files in os.walk(folder):
+        for file in files:
+            if file.endswith(end):
+                file_arr.append(file)
+    return file_arr
