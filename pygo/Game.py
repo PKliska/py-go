@@ -22,6 +22,7 @@ class Game:
         self.name = name
         self.board = [[None] * dim for i in range(dim)]
         self.ko_protected = [None] * len(players)
+        self.dead_stones = [0] * len(players)
         self.players = players
         self.current_player = 0
         self.dimension = dim
@@ -111,6 +112,7 @@ class Game:
     def clear_group(self, row, col):
         """Removes a group from the board replacing it with empty spaces"""
         for i in self.group(row, col):
+            self.dead_stones[self.board[i[0]][i[1]]] += 1
             self.board[i[0]][i[1]] = None
 
     def is_group_dead(self, row, col):
@@ -161,3 +163,19 @@ class Game:
             "{}h{}m{}s".format(*self.get_duration_hms()),
         )
         return self.name, date_str, info_str
+
+    def score(self):
+        result = [-dead_stones[i] for i in range(len(self.players))]
+        for i in range(self.dimension):
+            for j in range(self.dimension):
+                if self.board[i][j] is None:
+                    space = 0
+                    claim = [0]*len(self.players)
+                    for k in self.group(i, j):
+                        space += 1
+                        for l in self.neighbours(*k):
+                            if self.board[l[0]][l[1]] is not None:
+                                claim[self.board[l[0]][l[1]]] += 1
+                    for k in range(len(self.players)):
+                        result[k] += claim[k]*space/sum(claim)
+        return result
