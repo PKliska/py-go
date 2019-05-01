@@ -101,7 +101,11 @@ class Game:
         visited = set()
         to_visit = [(row, col)]
         player = self.board[row][col]
-        while len(to_visit) > 0:
+        while to_visit:
+            while to_visit and to_visit[-1] in visited:
+                to_visit.pop()
+            if not to_visit:
+                break
             c = to_visit.pop()
             visited.add(c)
             yield c
@@ -165,15 +169,15 @@ class Game:
         return self.name, date_str, info_str
 
     def score(self):
-        visited = [[False]*self.dimension for i in range(self.dimension)]
+        visited = set()
         result = [-self.dead_stones[i] for i in range(len(self.players))]
         for i in range(self.dimension):
             for j in range(self.dimension):
-                if self.board[i][j] is None and not visited[i][j]:
+                if self.board[i][j] is None and (i,j) not in visited:
                     space = 0
                     claim = [0]*len(self.players)
                     for k in self.group(i, j):
-                        visited[k[0]][k[1]] = True
+                        visited.add(k)
                         space += 1
                         for l in self.neighbours(*k):
                             if self.board[l[0]][l[1]] is not None:
