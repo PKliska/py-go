@@ -47,11 +47,6 @@ def get_dim(dim_str):
     return int(dim_str.split("x")[0])
 
 
-def remove_children(root):
-    for child in root.winfo_children():
-        child.destroy()
-
-
 def create_font(font_str):
 
     size = None

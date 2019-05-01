@@ -55,7 +55,7 @@ class ConfigStruct:
             "#ee82ee",
         ]
 
-        self.games_dir = '../games/'
+        self.games_dir = "../games/"
 
 
 config = ConfigStruct()

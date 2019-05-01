@@ -1,6 +1,7 @@
 import pickle
 import datetime
 
+
 def loadGame(fname):
     with open(fname, "rb") as file:
         game = pickle.load(file)
@@ -133,3 +134,24 @@ class Game:
                     r += chr(ord("0") + j)
             r += "\n"
         return r
+
+    def get_duration_hms(self):
+        secs = int(self.t_total.total_seconds())
+        hours = int(secs // 3600)
+        mins = int((secs % 3600) // 60)
+        tl = []
+        for x in [hours, mins, secs]:
+            if x < 10:
+                init_str = '0'
+            else:
+                init_str = ''
+            tl.append(init_str + str(x))
+        return tl
+        
+
+    def game_strs(self):
+        date_str = "Finished {:s}".format(self.t_end.strftime("%d/%m/%Y, %H:%M"))
+        info_str = "{0}x{0}   {1} players   T: {2}".format(
+            self.dimension, len(self.players), '{}:{}:{}'.format(*self.get_duration_hms())
+        )
+        return self.name, date_str, info_str
