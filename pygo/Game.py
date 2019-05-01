@@ -165,13 +165,15 @@ class Game:
         return self.name, date_str, info_str
 
     def score(self):
+        visited = [[False]*self.dimension for i in range(self.dimension)]
         result = [-self.dead_stones[i] for i in range(len(self.players))]
         for i in range(self.dimension):
             for j in range(self.dimension):
-                if self.board[i][j] is None:
+                if self.board[i][j] is None and not visited[i][j]:
                     space = 0
                     claim = [0]*len(self.players)
                     for k in self.group(i, j):
+                        visited[k[0]][k[1]] = True
                         space += 1
                         for l in self.neighbours(*k):
                             if self.board[l[0]][l[1]] is not None:
