@@ -153,6 +153,6 @@ class Game:
         info_str = "{0}x{0}   {1} players   T: {2}".format(
             self.dimension,
             len(self.players),
-            "{}:{}:{}".format(*self.get_duration_hms()),
+            "{}h{}m{}s".format(*self.get_duration_hms()),
         )
         return self.name, date_str, info_str
