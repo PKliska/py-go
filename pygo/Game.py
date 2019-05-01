@@ -12,7 +12,7 @@ def loadGame(fname):
 
 def saveGame(game, fname):
     if not os.path.exists(fname):
-        open(fname, 'a').close()
+        open(fname, "a").close()
     with open(fname, "wb") as file:
         pickle.dump(game, file, protocol=pickle.HIGHEST_PROTOCOL)
 

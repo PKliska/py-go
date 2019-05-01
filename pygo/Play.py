@@ -2,7 +2,7 @@ from tkinter import *
 import traceback
 import colorsys
 import datetime
-import uuid,os
+import uuid, os
 
 from Config import config as cfg
 import Utils as tls

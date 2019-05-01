@@ -57,21 +57,38 @@ class SavedGames(Frame):
             relx=0.5,
             rely=0.1,
         )
+
+
         self.games = []
         for i in os.listdir(tls.get_data_dir("saves")):
             self.games.append(loadGame(os.path.join(tls.get_data_dir("saves"), i)))
-        self.games.sort(key = lambda x: x.t_end, reverse=True)
+        self.games.sort(key=lambda x: x.t_end, reverse=True)
 
         saved_games = tls.VerticalScrolledFrame(self)
         a = []
         for game in self.games:
             switch = lambda e, g=game: self.master.switch_to(Play, args=[g])
             a.append(switch)
-            f = Frame(saved_games.interior)
+            f = Frame(saved_games.interior, background=cfg.bg_color)
+
+            def focus(event, fr=f):
+                fr.configure(bg='khaki')
+                for i in fr.winfo_children():
+                    i.configure(bg='khaki')
+
+            def unfocus(event, fr=f):
+                fr.configure(bg=cfg.bg_color)
+                for i in fr.winfo_children():
+                    i.configure(bg=cfg.bg_color)
+
             for s in game.game_strs():
-                l = Label(f, text=s)
+                l = Label(f, text=s, font=tls.create_font('query'), background=cfg.bg_color)
+                l.bind('<Button-1>', switch)
                 l.pack()
-                l.bind("<Button-1>", switch)
-            f.pack()
+
             f.bind("<Button-1>", switch)
-        saved_games.place(relx=0.5, rely=0.5, relwidth=0.3)
+            f.bind('<Enter>', focus)
+            f.bind('<Leave>', unfocus)
+            f.pack()
+
+        saved_games.place(anchor='center', relx=0.5, rely=0.5, relheight=0.6, relwidth=0.4)
