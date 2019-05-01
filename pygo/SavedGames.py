@@ -58,7 +58,6 @@ class SavedGames(Frame):
             rely=0.1,
         )
 
-
         self.games = []
         for i in os.listdir(tls.get_data_dir("saves")):
             self.games.append(loadGame(os.path.join(tls.get_data_dir("saves"), i)))
@@ -72,9 +71,9 @@ class SavedGames(Frame):
             f = Frame(saved_games.interior, background=cfg.bg_color)
 
             def focus(event, fr=f):
-                fr.configure(bg='khaki')
+                fr.configure(bg="khaki")
                 for i in fr.winfo_children():
-                    i.configure(bg='khaki')
+                    i.configure(bg="khaki")
 
             def unfocus(event, fr=f):
                 fr.configure(bg=cfg.bg_color)
@@ -82,13 +81,17 @@ class SavedGames(Frame):
                     i.configure(bg=cfg.bg_color)
 
             for s in game.game_strs():
-                l = Label(f, text=s, font=tls.create_font('query'), background=cfg.bg_color)
-                l.bind('<Button-1>', switch)
+                l = Label(
+                    f, text=s, font=tls.create_font("query"), background=cfg.bg_color
+                )
+                l.bind("<Button-1>", switch)
                 l.pack()
 
             f.bind("<Button-1>", switch)
-            f.bind('<Enter>', focus)
-            f.bind('<Leave>', unfocus)
+            f.bind("<Enter>", focus)
+            f.bind("<Leave>", unfocus)
             f.pack()
 
-        saved_games.place(anchor='center', relx=0.5, rely=0.5, relheight=0.6, relwidth=0.4)
+        saved_games.place(
+            anchor="center", relx=0.5, rely=0.5, relheight=0.6, relwidth=0.4
+        )

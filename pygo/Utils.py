@@ -30,7 +30,13 @@ class VerticalScrolledFrame(Frame):
 
         vscrollbar = Scrollbar(self, orient=VERTICAL)
         vscrollbar.pack(fill=Y, side=RIGHT, expand=FALSE)
-        canvas = Canvas(self, bd=0, highlightthickness=0, yscrollcommand=vscrollbar.set, background=cfg.bg_color)
+        canvas = Canvas(
+            self,
+            bd=0,
+            highlightthickness=0,
+            yscrollcommand=vscrollbar.set,
+            background=cfg.bg_color,
+        )
         canvas.pack(side=LEFT, fill=BOTH, expand=TRUE)
         vscrollbar.config(command=canvas.yview, background=cfg.bg_color)
 
