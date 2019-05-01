@@ -57,14 +57,16 @@ class SavedGames(Frame):
             relx=0.5,
             rely=0.1,
         )
-        games = []
+        self.games = []
         for i in os.listdir(tls.get_data_dir("saves")):
-            games.append(loadGame(os.path.join(tls.get_data_dir("saves"), i)))
-        games.sort(key = lambda x: x.t_end, reverse=True)
+            self.games.append(loadGame(os.path.join(tls.get_data_dir("saves"), i)))
+        self.games.sort(key = lambda x: x.t_end, reverse=True)
 
         saved_games = tls.VerticalScrolledFrame(self)
-        for game in games:
-            switch = lambda e: self.master.switch_to(Play, args=[game])
+        a = []
+        for game in self.games:
+            switch = lambda e, g=game: self.master.switch_to(Play, args=[g])
+            a.append(switch)
             f = Frame(saved_games.interior)
             for s in game.game_strs():
                 l = Label(f, text=s)
