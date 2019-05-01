@@ -43,6 +43,7 @@ class ConfigStruct:
         self.desc_font_size = 12
         self.query_font_size = 15
         self.start_font_size = 20
+        self.saved_font_size = 30
         self.title_font_size = 70
 
         self.dim_options = ["9x9", "13x13", "17x17", "19x19"]

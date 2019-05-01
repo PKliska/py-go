@@ -60,6 +60,8 @@ def create_font(font_str):
         size = cfg.start_font_size
     elif font_str == "title":
         size = cfg.title_font_size
+    elif font_str == "saved":
+        size = cfg.saved_font_size
 
     return Font(family=cfg.font_family, size=size)
 

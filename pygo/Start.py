@@ -10,6 +10,7 @@ class Start(Frame):
         self.configure(background=cfg.bg_color)
 
         from NewGame import NewGame
+        from SavedGames import SavedGames
 
         title_str = "Py-Go"
         desc_str = "An N-player Go implementation in Python using TKinter"
