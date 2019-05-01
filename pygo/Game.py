@@ -1,20 +1,24 @@
 import pickle
 import datetime
+import os
 
 
 def loadGame(fname):
     with open(fname, "rb") as file:
         game = pickle.load(file)
+    game.file = fname
     return game
 
 
 def saveGame(game, fname):
+    if not os.path.exists(fname):
+        open(fname, 'a').close()
     with open(fname, "wb") as file:
         pickle.dump(game, file, protocol=pickle.HIGHEST_PROTOCOL)
 
 
 class Game:
-    def __init__(self, name, dim, players):
+    def __init__(self, name, dim, players, file=None):
         self.name = name
         self.board = [[None] * dim for i in range(dim)]
         self.ko_protected = [None] * len(players)
@@ -22,7 +26,8 @@ class Game:
         self.current_player = 0
         self.dimension = dim
         self.t_total = datetime.timedelta(0)
-        self.t_end = None
+        self.t_end = datetime.datetime.now()
+        self.file = file
 
     def in_bounds(self, row, col):
         """Returns True if row and column are within the board"""
@@ -149,7 +154,7 @@ class Game:
         return tl
 
     def game_strs(self):
-        date_str = "Finished {:s}".format(self.t_end.strftime("%d/%m/%Y, %H:%M"))
+        date_str = "Last played {:s}".format(self.t_end.strftime("%d/%m/%Y, %H:%M"))
         info_str = "{0}x{0}   {1} players   T: {2}".format(
             self.dimension,
             len(self.players),

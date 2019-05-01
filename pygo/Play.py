@@ -2,6 +2,7 @@ from tkinter import *
 import traceback
 import colorsys
 import datetime
+import uuid,os
 
 from Config import config as cfg
 import Utils as tls
@@ -67,6 +68,7 @@ class BoardWidget(Frame):
                 self.stone_location[stone] = (i, j)
 
         self.canvas.pack(fill=BOTH, expand=True)
+        self.update()
 
     def update(self):
         for stone, (row, col) in self.stone_location.items():
@@ -183,6 +185,7 @@ class Play(Frame):
         self.game.t_total += delta_t
         self.game.t_end = t_end
 
-        saveGame(self.game, cfg.games_dir + self.game.name + ".pickle")
-
+        if self.game.file is None:
+            self.game.file = uuid.uuid4().hex + ".pickle"
+        saveGame(self.game, os.path.join(tls.get_data_dir("saves"), self.game.file))
         self.master.switch_to(Start)
