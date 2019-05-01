@@ -165,7 +165,7 @@ class Game:
         return self.name, date_str, info_str
 
     def score(self):
-        result = [-dead_stones[i] for i in range(len(self.players))]
+        result = [-self.dead_stones[i] for i in range(len(self.players))]
         for i in range(self.dimension):
             for j in range(self.dimension):
                 if self.board[i][j] is None:

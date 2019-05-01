@@ -9,6 +9,7 @@ import Utils as tls
 
 from Start import Start
 from Game import Game, saveGame
+from Result import Result
 
 
 class BoardWidget(Frame):
@@ -224,7 +225,7 @@ class Play(Frame):
     def pass_move(self):
         self.passed += 1
         if self.passed == len(self.game.players):
-            print("Done!")
+            self.master.switch_to(Result, args = [self.game.players, self.game.score()])
         else:
             self.game.current_player = (self.game.current_player + 1) % len(self.game.players)
             self.update_labels()
