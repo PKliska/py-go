@@ -1,7 +1,6 @@
 import os
 from tkinter import *
 from tkinter.font import Font
-from PIL import Image, ImageTk
 
 from colorsys import rgb_to_hls
 from Config import config as cfg
@@ -104,9 +103,7 @@ def create_font(font_str):
 
 
 def create_home(x_size=cfg.home_button_size, y_size=cfg.home_button_size):
-    return ImageTk.PhotoImage(
-        Image.open(cfg.home_icon).resize((x_size, y_size), Image.ANTIALIAS)
-    )
+    return PhotoImage(file=cfg.home_icon)
 
 
 def get_data_dir(subdir=""):

@@ -36,7 +36,7 @@ class ConfigStruct:
 
         self.relief = "flat"
 
-        self.home_icon = "../media/home.png"
+        self.home_icon = "../media/home.gif"
         self.home_button_size = 40
 
         self.font_family = "Noto Mono"
