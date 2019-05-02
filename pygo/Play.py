@@ -9,6 +9,7 @@ import Utils as tls
 
 from Start import Start
 from Game import Game, saveGame
+from Result import Result
 
 
 class BoardWidget(Frame):
@@ -131,7 +132,7 @@ class Play(Frame):
             rely=0.05,
         )
 
-        end_str = "End game"
+        end_str = "Save & exit"
         relh_end_str = tls.get_rel_h(
             cfg.start_font_size, cfg.y_window_size, button=True
         )
@@ -158,6 +159,35 @@ class Play(Frame):
             rely=0.90,
         )
 
+        pass_str = "Pass"
+        self.passed = 0
+        relh_pass_str = tls.get_rel_h(
+            cfg.start_font_size, cfg.y_window_size, button=True
+        )
+        relw_pass_str = tls.get_rel_w(
+            pass_str, cfg.start_font_size, cfg.x_window_size, button=True
+        )
+        pass_but = Button(
+            self,
+            text=pass_str,
+            font=tls.create_font("start"),
+            activebackground="light salmon",
+            bg=cfg.bg_color,
+            fg=cfg.fg_color,
+            relief=cfg.relief,
+            highlightthickness=cfg.border_thick,
+            highlightbackground=cfg.border_color,
+            command=lambda: self.pass_move(),
+        )
+        pass_but.place(
+            anchor="center",
+            relheight=relh_end_str,
+            relwidth=relw_end_str,
+            relx=0.15,
+            rely=0.90,
+        )
+
+
         self.board = BoardWidget(self, self.game)
         self.board.bind("<<MoveMade>>", self.update_labels)
         self.board.place(
@@ -166,6 +196,8 @@ class Play(Frame):
         self.update_labels()
 
     def update_labels(self, event=None):
+        if event is not None:
+            passed = 0
         current_player_name = self.game.players[self.game.current_player]["name"]
         current_player_color = self.game.players[self.game.current_player]["color"]
         lightness = tls.hex_to_hls(current_player_color)[1]
@@ -189,3 +221,11 @@ class Play(Frame):
             self.game.file = uuid.uuid4().hex + ".pickle"
         saveGame(self.game, os.path.join(tls.get_data_dir("saves"), self.game.file))
         self.master.switch_to(Start)
+
+    def pass_move(self):
+        self.passed += 1
+        if self.passed == len(self.game.players):
+            self.master.switch_to(Result, args = [self.game.players, self.game.score()])
+        else:
+            self.game.current_player = (self.game.current_player + 1) % len(self.game.players)
+            self.update_labels()
