@@ -173,9 +173,9 @@ class Game:
         result = [-self.dead_stones[i] for i in range(len(self.players))]
         for i in range(self.dimension):
             for j in range(self.dimension):
-                if self.board[i][j] is None and (i,j) not in visited:
+                if self.board[i][j] is None and (i, j) not in visited:
                     space = 0
-                    claim = [0]*len(self.players)
+                    claim = [0] * len(self.players)
                     for k in self.group(i, j):
                         visited.add(k)
                         space += 1
@@ -183,5 +183,5 @@ class Game:
                             if self.board[l[0]][l[1]] is not None:
                                 claim[self.board[l[0]][l[1]]] += 1
                     for k in range(len(self.players)):
-                        result[k] += claim[k]*space/sum(claim)
+                        result[k] += claim[k] * space / sum(claim)
         return result

@@ -187,7 +187,6 @@ class Play(Frame):
             rely=0.90,
         )
 
-
         self.board = BoardWidget(self, self.game)
         self.board.bind("<<MoveMade>>", self.update_labels)
         self.board.place(
@@ -225,7 +224,9 @@ class Play(Frame):
     def pass_move(self):
         self.passed += 1
         if self.passed == len(self.game.players):
-            self.master.switch_to(Result, args = [self.game.players, self.game.score()])
+            self.master.switch_to(Result, args=[self.game.players, self.game.score()])
         else:
-            self.game.current_player = (self.game.current_player + 1) % len(self.game.players)
+            self.game.current_player = (self.game.current_player + 1) % len(
+                self.game.players
+            )
             self.update_labels()
